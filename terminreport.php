@@ -306,15 +306,20 @@ if (!empty($confirmexamdate)) {
     $arrsclname = array();
     foreach($arr as $userid) {
         $user = \core_user::get_user($userid);
-        $arrsclname[$userid] = trim($user->firstname.' '.$user->lastname);
+        if (false !== $user) {
+            $arrsclname[$userid] = trim($user->firstname.' '.$user->lastname);
+        }
     }
 
     // custom-select custom-select-sm form-control mr-1 // custom-select custom-select-sm form-control mr-1
-    echo '<select size="1" id="sclid" name="sclid" class="custom-select form-control">';
-    echo '<option value="0">&nbsp;</option>';
-    foreach($arrsclname as $id => $name) {
-        echo '<option value="'.$id.'">'.$name.'</option>';
+    echo '<select size="1" id="sclid" name="sclid" class="custom-select">';
+    echo '<option value="0">'.get_string('choose').'</option>';
+    if (!empty($arrsclname)) {
+        foreach($arrsclname as $id => $name) {
+            echo '<option value="'.$id.'">'.$name.'</option>';
+        }
     }
+    
     echo '</select>';
 
     echo '</td>';
@@ -343,7 +348,6 @@ if (!empty($confirmexamdate)) {
 
     echo MyTable::gettermindata();
     //echo block_eledia_adminexamdates\util::getexamdatetable();
-    $checklistlink = get_string('checklistlink','block_eledia_adminexamdates');
     echo '<script type="text/javascript">';
     echo '
         // Warum wurden die hier mal deklariert?
