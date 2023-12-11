@@ -445,3 +445,14 @@ $string['data_field_id_default_title'] = 'Problemdatenbank, Klausurbezeichnung';
 $string['data_field_id_default_description'] = 'Welches Problemdatenbank-Feld soll beim Hinzufügen eines Problems mit der '
         .'Klausurbezeichnung vorbelegt sein?';
 
+// Capabilities.
+$string['elediachecklist:addinstance'] = 'Check if user is able to add a checklist module.';
+$string['elediachecklist:edit'] = 'Ability to create and manage checklists.';
+$string['elediachecklist:emailoncomplete'] = 'Will receive emails when checklists complete (if checklist is set to do so).';
+$string['elediachecklist:preview'] = 'Ability to preview a checklist (to check it is OK).';
+$string['elediachecklist:updatelocked'] = 'Can update teacher checklist marks even if locked.';
+$string['elediachecklist:updateother'] = 'Ability to alter the marks on another person\'s checklist.';
+$string['elediachecklist:updateown'] = 'Ability to view and update own checklist.';
+$string['elediachecklist:viewmenteereports'] = 'Ability to view reports related to their \'mentees\' only.';
+$string['elediachecklist:viewreports'] = 'Ability to check up on the progress of all users through their checklists.';
+
