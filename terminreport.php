@@ -21,10 +21,9 @@
  */
 
 require('../../config.php');
-require_once(__DIR__.'/lib.php');
+require_once(__DIR__ . '/lib.php');
 
 global $USER, $CFG, $PAGE, $OUTPUT, $DB;
-
 
 $context = context_system::instance();
 
@@ -44,8 +43,7 @@ class MyTable {
     /**
      *
      */
-    public static function gettermindata()
-    {
+    public static function gettermindata() {
         global $DB, $USER;
 
         $myexams = null;
@@ -60,10 +58,11 @@ class MyTable {
 
         $sql = "";
         $count = 0;
-        foreach($myexams as $me) {
+        foreach ($myexams as $me) {
 
-            if ($count > 0)
+            if ($count > 0) {
                 $sql = $sql . " UNION ";
+            }
 
             $sql = $sql . "SELECT 
             item.id, 
@@ -79,8 +78,8 @@ class MyTable {
             (SELECT examtimestart FROM {eledia_adminexamdates} AS exam WHERE exam.id = " . $me->id . ") AS TopicDate, 
             item.duetime 
             
-            FROM {".$tab1."} AS item
-            LEFT JOIN {".$tab2."} AS ch ON (item.id = ch.item AND ch.teacherid = " . $me->id . ") 
+            FROM {" . $tab1 . "} AS item
+            LEFT JOIN {" . $tab2 . "} AS ch ON (item.id = ch.item AND ch.teacherid = " . $me->id . ") 
             WHERE ch.id IS null 
             ";
 
@@ -96,8 +95,7 @@ class MyTable {
 
         // Spalten der Tabelle //.
         // Darstellung mit: https://www.datatables.net/ //.
-        $tableheaditems = [
-                'id',           // 0 // visible = false
+        $tableheaditems = ['id',           // 0 // visible = false
                 'examid',       // 1 // visible = false
                 'examname',     // 2
                 'sclname',      // 3
@@ -106,46 +104,45 @@ class MyTable {
                 'scl_id',       // 6 // visible = false
                 'topicdate_tp'  // 7 // visible = false
         ];
-        $tableheaditemshidden = array('id', 'examid', 'scl_id', 'topicdate_tp');
-        $tableheaditemsnoheader = array();
+        $tableheaditemshidden = ['id', 'examid', 'scl_id', 'topicdate_tp'];
+        $tableheaditemsnoheader = [];
 
-        $text  = \html_writer::start_tag('table', array('id' => 'examdatestable', 'class' => 'table table-striped table-bordered table-hover table-sm', 'style' => 'width:100%'))."\n";
-        $text .= \html_writer::start_tag('thead', array('class' => 'thead-light'))."\n";
-        $text .= \html_writer::start_tag('tr')."\n";
+        $text = \html_writer::start_tag('table',
+                        ['id' => 'examdatestable', 'class' => 'table table-striped table-bordered table-hover table-sm',
+                                'style' => 'width:100%']) . "\n";
+        $text .= \html_writer::start_tag('thead', ['class' => 'thead-light']) . "\n";
+        $text .= \html_writer::start_tag('tr') . "\n";
         foreach ($tableheaditems as $tableheaditem) {
-            if(in_array($tableheaditem, $tableheaditemshidden)) {
+            if (in_array($tableheaditem, $tableheaditemshidden)) {
                 $inp = '&nbsp;';
-            }
-            else if(in_array($tableheaditem, $tableheaditemsnoheader)) {
+            } else if (in_array($tableheaditem, $tableheaditemsnoheader)) {
                 $inp = $tableheaditem;
-            }
-            else if($tableheaditem == 'sclname') {
+            } else if ($tableheaditem == 'sclname') {
                 $inp = 'SCL Verantwortlicher';
-            }
-            else {
+            } else {
                 $inp = get_string('tablehead_' . $tableheaditem, 'elediachecklist');
             }
-            $text .= \html_writer::tag('th', $inp, array('scope' => 'col'))."\n";
+            $text .= \html_writer::tag('th', $inp, ['scope' => 'col']) . "\n";
         }
-        $text .= \html_writer::end_tag('tr')."\n";
-        $text .= \html_writer::end_tag('thead'."\n");
-        $text .= \html_writer::start_tag('tbody')."\n";
+        $text .= \html_writer::end_tag('tr') . "\n";
+        $text .= \html_writer::end_tag('thead' . "\n");
+        $text .= \html_writer::start_tag('tbody') . "\n";
 
         foreach ($dates as $date) {
 
-            $text .= \html_writer::start_tag('tr')."\n";
+            $text .= \html_writer::start_tag('tr') . "\n";
 
             //echo '<pre>'.print_r($date, true).'</pre>'; //die();
 
             // hidden -> id
-            $text .= \html_writer::tag('td', $date->id)."\n";
+            $text .= \html_writer::tag('td', $date->id) . "\n";
 
             // hidden -> examid
-            $text .= \html_writer::tag('td', $date->examid)."\n";
+            $text .= \html_writer::tag('td', $date->examid) . "\n";
 
             // hidden -> SCL-Verantwortlicher
             $sclname = '';
-            if(is_numeric($date->responsibleperson)  &&  $date->responsibleperson > 0) {
+            if (is_numeric($date->responsibleperson) && $date->responsibleperson > 0) {
                 $sql = "SELECT id, firstname, lastname FROM {user} WHERE id = " . $date->responsibleperson;
                 $res = $DB->get_records_sql($sql);
                 if (isset($res) && is_array($res) && count($res) > 0) {
@@ -155,51 +152,48 @@ class MyTable {
             }
 
             //$href = 'tabtermin.php?id='.$date->id.'&examid='.$date->examid;
-            $href = 'tabtermin.php?eledia='.$date->checklist.'&examid='.$date->examid;
+            $href = 'tabtermin.php?eledia=' . $date->checklist . '&examid=' . $date->examid;
             // DATE_FORMAT(DATE_ADD(FROM_UNIXTIME(floor((SELECT examtimestart FROM {eledia_adminexamdates} AS exam WHERE exam.id = " . $me->id . "))), INTERVAL item.duetime DAY),'%d.%m.%Y') AS TopicDate
             $tp = $date->tp_examtimestart + (60 * 60 * 24 * $date->duetime);
             $topicdate = date('d.m.Y', $tp);
             $topicdatetp = $tp;
 
-            $text .= \html_writer::tag('td', $date->examname)."\n";
-            $text .= \html_writer::tag('td', $sclname)."\n";
+            $text .= \html_writer::tag('td', $date->examname) . "\n";
+            $text .= \html_writer::tag('td', $sclname) . "\n";
             //$text .= \html_writer::tag('td', $date->checked);
             //$text .= \html_writer::tag('td', "<a href='tabtermin.php?id=" . get_string('checklist_id', 'elediachecklist') . "&examid=" . $date->examid . "'>" . $date->topic . "</a>");
             //$text .= \html_writer::tag('td', "<a href='".$href."'>" . $date->topic . "</a>");
-            $text .= \html_writer::tag('td', '<a href="'.$href.'">'.$date->topic.'</a>')."\n";
+            $text .= \html_writer::tag('td', '<a href="' . $href . '">' . $date->topic . '</a>') . "\n";
             //$text .= \html_writer::tag('td', $date->topicdate);
-            $text .= \html_writer::tag('td', $topicdate)."\n";
+            $text .= \html_writer::tag('td', $topicdate) . "\n";
 
             // hidden -> scl_id
-            $text .= \html_writer::tag('td', $date->responsibleperson)."\n";
+            $text .= \html_writer::tag('td', $date->responsibleperson) . "\n";
 
             // hidden -> topicdate_tp
-            $text .= \html_writer::tag('td', $topicdatetp)."\n";
+            $text .= \html_writer::tag('td', $topicdatetp) . "\n";
 
-            $text .= \html_writer::end_tag('tr')."\n";
+            $text .= \html_writer::end_tag('tr') . "\n";
         }
 
-        $text .= \html_writer::end_tag('tbody')."\n";
-        $text .= \html_writer::start_tag('tfoot', array('class' => 'thead-light'))."\n";
-        $text .= \html_writer::start_tag('tr')."\n";
+        $text .= \html_writer::end_tag('tbody') . "\n";
+        $text .= \html_writer::start_tag('tfoot', ['class' => 'thead-light']) . "\n";
+        $text .= \html_writer::start_tag('tr') . "\n";
         foreach ($tableheaditems as $tableheaditem) {
-            if(in_array($tableheaditem, $tableheaditemshidden)) {
+            if (in_array($tableheaditem, $tableheaditemshidden)) {
                 $inp = '&nbsp;';
-            }
-            else if(in_array($tableheaditem, $tableheaditemsnoheader)) {
+            } else if (in_array($tableheaditem, $tableheaditemsnoheader)) {
                 $inp = $tableheaditem;
-            }
-            else if($tableheaditem == 'sclname') {
+            } else if ($tableheaditem == 'sclname') {
                 $inp = 'SCL Verantwortlicher';
-            }
-            else {
+            } else {
                 $inp = get_string('tablehead_' . $tableheaditem, 'elediachecklist');
             }
-            $text .= \html_writer::tag('th', $inp, array('scope' => 'col'))."\n";
+            $text .= \html_writer::tag('th', $inp, ['scope' => 'col']) . "\n";
         }
-        $text .= \html_writer::end_tag('tr')."\n";
-        $text .= \html_writer::end_tag('tfoot')."\n";
-        $text .= \html_writer::end_tag('table')."\n";
+        $text .= \html_writer::end_tag('tr') . "\n";
+        $text .= \html_writer::end_tag('tfoot') . "\n";
+        $text .= \html_writer::end_tag('table') . "\n";
 
         return $text;
     }
@@ -213,9 +207,10 @@ $PAGE->set_title(get_string('examdaterequest', 'block_eledia_adminexamdates'));
 $PAGE->set_pagelayout('course');
 
 if (!empty($confirmexamdate)) {
-    $examdatename=$DB->get_record('eledia_adminexamdates',['id'=>$confirmexamdate],'examname');
+    $examdatename = $DB->get_record('eledia_adminexamdates', ['id' => $confirmexamdate], 'examname');
     $message = get_string('confirmexamdatemsg', 'block_eledia_adminexamdates', ['name' => $examdatename->examname]);
-    $formcontinue = new single_button(new moodle_url($PAGE->url, ['confirmexamdateyes' => $confirmexamdate]), get_string('yes'), 'post');
+    $formcontinue =
+            new single_button(new moodle_url($PAGE->url, ['confirmexamdateyes' => $confirmexamdate]), get_string('yes'), 'post');
     $formcancel = new single_button(new moodle_url($PAGE->url), get_string('no'));
     echo $OUTPUT->header();
     echo $OUTPUT->box_start('generalbox');
@@ -223,9 +218,11 @@ if (!empty($confirmexamdate)) {
     echo $OUTPUT->box_end();
 
 } else if (!empty($cancelexamdate)) {
-    $examdatename=$DB->get_record('eledia_adminexamdates',['id'=>$cancelexamdate],'examname');
+    $examdatename = $DB->get_record('eledia_adminexamdates', ['id' => $cancelexamdate], 'examname');
     $message = get_string('cancelexamdatemsg', 'block_eledia_adminexamdates', ['name' => $examdatename->examname]);
-    $formcontinue = new single_button(new moodle_url($PAGE->url, ['cancelexamdateyes' => $cancelexamdate]), get_string('yes'), 'post');
+    $formcontinue =
+            new single_button(
+                    new moodle_url($PAGE->url, ['cancelexamdateyes' => $cancelexamdate]), get_string('yes'), 'post');
     $formcancel = new single_button(new moodle_url($PAGE->url), get_string('no'));
     echo $OUTPUT->header();
     echo $OUTPUT->box_start('generalbox');
@@ -243,46 +240,53 @@ if (!empty($confirmexamdate)) {
     echo $OUTPUT->container_start();
 
     $url = new moodle_url('/blocks/eledia_adminexamdates/editexamdate.php', ['newexamdate' => 1]);
-    $newexamdatebutton = new single_button($url, get_string('newexamdate', 'block_eledia_adminexamdates'), 'post');
+    $newexamdatebutton =
+            new single_button($url, get_string('newexamdate', 'block_eledia_adminexamdates'), 'post');
     $urlcalendar = new moodle_url('/blocks/eledia_adminexamdates/calendar.php');
 
     //BUTTONS
     //echo $OUTPUT->single_button($url, get_string('newexamdate', 'block_eledia_adminexamdates'), 'post');
     //echo $OUTPUT->single_button($urlcalendar, get_string('calendar_btn', 'block_eledia_adminexamdates'), 'post');
 
-    echo \html_writer::start_tag('div', array('class' => 'container px-5'));
-    echo \html_writer::start_tag('div', array('class' => 'row'));
-    echo \html_writer::start_tag('div', array('class' => 'col-xs-12'));
+    echo \html_writer::start_tag('div', ['class' => 'container px-5']);
+    echo \html_writer::start_tag('div', ['class' => 'row']);
+    echo \html_writer::start_tag('div', ['class' => 'col-xs-12']);
 
     // Button -> Pruefungstermin-Kalender
     $urlcalendar = new moodle_url('/blocks/eledia_adminexamdates/calendar.php');
-    echo $OUTPUT->single_button($urlcalendar, get_string('calendar_btn', 'block_eledia_adminexamdates'), 'post')."\n";
+    echo $OUTPUT->single_button
+            ($urlcalendar, get_string('calendar_btn', 'block_eledia_adminexamdates'), 'post') . "\n";
 
     // Button -> Pruefungstermin-Liste
     $urllist = new moodle_url('/blocks/eledia_adminexamdates/examdateslist.php');
-    echo $OUTPUT->single_button($urllist, get_string('examdateslist_btn', 'block_eledia_adminexamdates'), 'post')."\n";
+    echo $OUTPUT->single_button
+            ($urllist, get_string('examdateslist_btn', 'block_eledia_adminexamdates'), 'post') . "\n";
 
     // Button -> Unbestaetigte Pruefungstermine
     $unconfirmed = new moodle_url('/blocks/eledia_adminexamdates/examdatesunconfirmed.php');
-    echo $OUTPUT->single_button($unconfirmed, get_string('unconfirmed_btn', 'block_eledia_adminexamdates'), 'post')."\n";
+    echo $OUTPUT->single_button
+            ($unconfirmed, get_string('unconfirmed_btn', 'block_eledia_adminexamdates'), 'post') . "\n";
 
     // Button -> Neuer Pruefungstermin
     $url = new moodle_url('/blocks/eledia_adminexamdates/editexamdate.php', ['newexamdate' => 1]);
-    echo $OUTPUT->single_button($url, get_string('newexamdate', 'block_eledia_adminexamdates'), 'post')."\n";
+    echo $OUTPUT->single_button
+            ($url, get_string('newexamdate', 'block_eledia_adminexamdates'), 'post') . "\n";
 
     // Button -> Pruefungstermin-Statistik
     $statistics = new moodle_url('/blocks/eledia_adminexamdates/statistics.php');
-    echo $OUTPUT->single_button($statistics, get_string('statistics', 'block_eledia_adminexamdates'), 'post')."\n";
+    echo $OUTPUT->single_button
+            ($statistics, get_string('statistics', 'block_eledia_adminexamdates'), 'post') . "\n";
 
     // Button -> Report
     $urlReport = new moodle_url('/mod/elediachecklist/terminreport.php');
-    echo $OUTPUT->single_button($urlReport, get_string('report_button', 'elediachecklist'), 'get')."\n";
+    echo $OUTPUT->single_button
+            ($urlReport, get_string('report_button', 'elediachecklist'), 'get') . "\n";
 
-    echo \html_writer::end_tag('div')."\n";
-    echo \html_writer::end_tag('div')."\n";
+    echo \html_writer::end_tag('div') . "\n";
+    echo \html_writer::end_tag('div') . "\n";
 
-    echo \html_writer::start_tag('div', array('class' => 'row mt-3'))."\n";
-    echo \html_writer::start_tag('div', array('class' => 'col-xs-12'))."\n";
+    echo \html_writer::start_tag('div', ['class' => 'row mt-3']) . "\n";
+    echo \html_writer::start_tag('div', ['class' => 'col-xs-12']) . "\n";
 
     echo '<table border="0" cellspacing="5" cellpadding="5">';
     echo '<tbody><tr>';
@@ -303,23 +307,23 @@ if (!empty($confirmexamdate)) {
     $str = trim($str);
     $str = str_replace(' ', '', $str);
     $arr = explode(',', $str);
-    $arrsclname = array();
-    foreach($arr as $userid) {
+    $arrsclname = [];
+    foreach ($arr as $userid) {
         $user = \core_user::get_user($userid);
         if (false !== $user) {
-            $arrsclname[$userid] = trim($user->firstname.' '.$user->lastname);
+            $arrsclname[$userid] = trim($user->firstname . ' ' . $user->lastname);
         }
     }
 
     // custom-select custom-select-sm form-control mr-1 // custom-select custom-select-sm form-control mr-1
     echo '<select size="1" id="sclid" name="sclid" class="custom-select">';
-    echo '<option value="0">'.get_string('choose').'</option>';
+    echo '<option value="0">' . get_string('choose') . '</option>';
     if (!empty($arrsclname)) {
-        foreach($arrsclname as $id => $name) {
-            echo '<option value="'.$id.'">'.$name.'</option>';
+        foreach ($arrsclname as $id => $name) {
+            echo '<option value="' . $id . '">' . $name . '</option>';
         }
     }
-    
+
     echo '</select>';
 
     echo '</td>';
@@ -332,22 +336,27 @@ if (!empty($confirmexamdate)) {
     // ???
     $urleditsingleexamdate = new moodle_url('/blocks/eledia_adminexamdates/editsingleexamdate.php', ['blockid' => '']);
     //echo \html_writer::start_tag('div', array('style' => 'border:1px solid red;'))."\n";
-    echo $OUTPUT->box($OUTPUT->single_button($urleditsingleexamdate, '', 'post'),'d-none','editsingleexamdate')."\n";
+    echo $OUTPUT->box($OUTPUT->single_button($urleditsingleexamdate, '', 'post'), 'd-none', 'editsingleexamdate') . "\n";
     //echo \html_writer::end_tag('div')."\n";
 
     //echo '<link rel="stylesheet" type="text/css" href="datatables/datatables.min.css"/>';
-    echo '<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css"/>'."\n";
-    echo '<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/datetime/1.1.1/css/dataTables.dateTime.min.css"/>'."\n";
-    echo '<style>'."\n";
-    echo '</style>'."\n";
+    echo '<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css"/>' . "\n";
+    echo '<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/datetime/1.1.1/css/dataTables.dateTime.min.css"/>' .
+            "\n";
+    echo '<style>' . "\n";
+    echo '</style>' . "\n";
     //echo '<script type="text/javascript" src="datatables/datatables.min.js"></script>';
-    echo '<script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>'."\n";
-    echo '<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>'."\n";
-    echo '<script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>'."\n";
-    echo '<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/datetime/1.1.1/js/dataTables.dateTime.min.js"></script>'."\n";
+    echo '<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>' . "\n";
+    echo '<script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>' .
+            "\n";
+    echo '<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>' .
+            "\n";
+    echo '<script type="text/javascript" src="https://cdn.datatables.net/datetime/1.1.1/js/dataTables.dateTime.min.js"></script>' .
+            "\n";
 
     echo MyTable::gettermindata();
     //echo block_eledia_adminexamdates\util::getexamdatetable();
+
     echo '<script type="text/javascript">';
     echo '
         // Warum wurden die hier mal deklariert?
@@ -483,26 +492,26 @@ if (!empty($confirmexamdate)) {
         "info": true,
 
         "language": {
-            "lengthMenu": "'.get_string('dt_lenghtmenu','block_eledia_adminexamdates').'",
-            "zeroRecords": "'.get_string('dt_zerorecords','block_eledia_adminexamdates').'",
-            "info": "'.get_string('dt_info','block_eledia_adminexamdates').'",
-            "infoEmpty": "'.get_string('dt_infoempty','block_eledia_adminexamdates').'",
-            "infoFiltered": "'.get_string('dt_infofiltered','block_eledia_adminexamdates').'",
-                        "emptyTable": "'.get_string('dt_emptytable','block_eledia_adminexamdates').'",
-            "infoPostFix": "'.get_string('dt_infopostfix','block_eledia_adminexamdates').'",
-            "thousands": "'.get_string('dt_thousands','block_eledia_adminexamdates').'",
-            "loadingRecords": "'.get_string('dt_loadingrecords','block_eledia_adminexamdates').'",
-            "processing": "'.get_string('dt_processing','block_eledia_adminexamdates').'",
-                        "search": "'.get_string('dt_search','block_eledia_adminexamdates').'",
+            "lengthMenu": "' . get_string('dt_lenghtmenu', 'block_eledia_adminexamdates') . '",
+            "zeroRecords": "' . get_string('dt_zerorecords', 'block_eledia_adminexamdates') . '",
+            "info": "' . get_string('dt_info', 'block_eledia_adminexamdates') . '",
+            "infoEmpty": "' . get_string('dt_infoempty', 'block_eledia_adminexamdates') . '",
+            "infoFiltered": "' . get_string('dt_infofiltered', 'block_eledia_adminexamdates') . '",
+                        "emptyTable": "' . get_string('dt_emptytable', 'block_eledia_adminexamdates') . '",
+            "infoPostFix": "' . get_string('dt_infopostfix', 'block_eledia_adminexamdates') . '",
+            "thousands": "' . get_string('dt_thousands', 'block_eledia_adminexamdates') . '",
+            "loadingRecords": "' . get_string('dt_loadingrecords', 'block_eledia_adminexamdates') . '",
+            "processing": "' . get_string('dt_processing', 'block_eledia_adminexamdates') . '",
+                        "search": "' . get_string('dt_search', 'block_eledia_adminexamdates') . '",
                         "paginate": {
-            "first": "'.get_string('dt_first','block_eledia_adminexamdates').'",
-            "last": "'.get_string('dt_last','block_eledia_adminexamdates').'",
-            "next": "'.get_string('dt_next','block_eledia_adminexamdates').'",
-            "previous": "'.get_string('dt_previous','block_eledia_adminexamdates').'",
+            "first": "' . get_string('dt_first', 'block_eledia_adminexamdates') . '",
+            "last": "' . get_string('dt_last', 'block_eledia_adminexamdates') . '",
+            "next": "' . get_string('dt_next', 'block_eledia_adminexamdates') . '",
+            "previous": "' . get_string('dt_previous', 'block_eledia_adminexamdates') . '",
                         },
                          "aria": {
-                         "sortAscending": "'.get_string('dt_sortascending','block_eledia_adminexamdates').'",
-            "sortDescending": "'.get_string('dt_sortdescending','block_eledia_adminexamdates').'",
+                         "sortAscending": "' . get_string('dt_sortascending', 'block_eledia_adminexamdates') . '",
+            "sortDescending": "' . get_string('dt_sortdescending', 'block_eledia_adminexamdates') . '",
             }
         }
     } );
@@ -521,16 +530,14 @@ if (!empty($confirmexamdate)) {
     echo $OUTPUT->container_end();
 }
 
-
 echo $OUTPUT->footer();
 
-
-//$("#examdatestable tbody").on( "click", "tr.group", function () {
-//    var currentOrder = table.order()[0];
-//    if ( currentOrder[0] === groupColumn && currentOrder[1] === "asc" ) {
-//        table.order( [ groupColumn, "desc" ] ).draw();
-//    }
-//    else {
-//        table.order( [ groupColumn, "asc" ] ).draw();
-//    }
-//} );
+// $("#examdatestable tbody").on( "click", "tr.group", function () {
+// var currentOrder = table.order()[0];
+// if ( currentOrder[0] === groupColumn && currentOrder[1] === "asc" ) {
+// table.order( [ groupColumn, "desc" ] ).draw();
+// }
+// else {
+// table.order( [ groupColumn, "asc" ] ).draw();
+// }
+// } );
