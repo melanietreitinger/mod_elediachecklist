@@ -46,7 +46,7 @@ require_capability('mod/elediachecklist:updateown', $context);
 require_sesskey();
 
 if ($items) {
-    $chk = new checklist_class($cm->id, $userid, $checklist, $cm, $course);
+    $chk = new elediachecklist_class($cm->id, $userid, $checklist, $cm, $course);
     $chk->ajaxupdatechecks($items);
 }
 

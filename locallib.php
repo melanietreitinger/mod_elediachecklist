@@ -48,9 +48,9 @@ define("CHECKLIST_HIDDEN_MANUAL", 1);
 define("CHECKLIST_HIDDEN_BYMODULE", 2);
 
 /**
- * Class checklist_class
+ * Class elediachecklist_class
  */
-class checklist_class {
+class elediachecklist_class {
     /** @var stdClass */
     protected $cm;
     /** @var stdClass */

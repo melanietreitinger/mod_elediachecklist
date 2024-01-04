@@ -38,6 +38,6 @@ $checklist = $DB->get_record('elediachecklist', array('id' => $cm->instance), '*
 $PAGE->set_url($url);
 require_login($course, true, $cm);
 
-if ($chk = new checklist_class($cm->id, 0, $checklist, $cm, $course)) {
+if ($chk = new elediachecklist_class($cm->id, 0, $checklist, $cm, $course)) {
     $chk->edit();
 }

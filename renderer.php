@@ -955,7 +955,7 @@ ENDSCRIPT;
         $out .= html_writer::tag('label', get_string('linkto', 'mod_elediachecklist')).' ';
         if ($status->is_allowcourselinks()) {
             $selected = $item ? $item->linkcourseid : null;
-            $out .= html_writer::select(checklist_class::get_linkable_courses(), 'linkcourseid', $selected,
+            $out .= html_writer::select(elediachecklist_class::get_linkable_courses(), 'linkcourseid', $selected,
                                         ['' => get_string('choosecourse', 'mod_elediachecklist')]);
             $out .= ' '.get_string('or', 'mod_elediachecklist').' ';
         }
@@ -1000,7 +1000,7 @@ ENDSCRIPT;
         $out .= '<br>';
         $out .= html_writer::label(get_string('grouping', 'mod_elediachecklist'), 'id_grouping').' ';
         $selected = $item ? $item->groupingid : null;
-        $groupings = checklist_class::get_course_groupings($status->get_courseid());
+        $groupings = elediachecklist_class::get_course_groupings($status->get_courseid());
         $out .= html_writer::select($groupings, 'groupingid', $selected, [0 => get_string('anygrouping', 'mod_elediachecklist')],
                                     ['id' => 'id_grouping']);
 

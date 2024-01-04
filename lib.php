@@ -240,7 +240,7 @@ function elediachecklist_update_instance($checklist) {
     // Add or remove all calendar events, as needed.
     $course = $DB->get_record('course', array('id' => $checklist->course));
     $cm = get_coursemodule_from_instance('elediachecklist', $checklist->id, $course->id);
-    $chk = new checklist_class($cm->id, 0, $checklist, $cm, $course);
+    $chk = new elediachecklist_class($cm->id, 0, $checklist, $cm, $course);
     $chk->setallevents();
 
     elediachecklist_grade_item_update($checklist);
@@ -303,7 +303,7 @@ function elediachecklist_delete_instance($id) {
         $course = $DB->get_record('course', array('id' => $checklist->course));
         $cm = get_coursemodule_from_instance('elediachecklist', $checklist->id, $course->id);
         if ($cm) { // Should not be false, but check, just in case...
-            $chk = new checklist_class($cm->id, 0, $checklist, $cm, $course);
+            $chk = new elediachecklist_class($cm->id, 0, $checklist, $cm, $course);
             $chk->setallevents();
         }
     }
@@ -364,7 +364,7 @@ function elediachecklist_update_grades($checklist, $userid = 0) {
     $context = context_module::instance($cm->id);
 
     $checkgroupings = false; // Don't check items against groupings unless we really have to.
-    $groupings = checklist_class::get_course_groupings($course->id);
+    $groupings = elediachecklist_class::get_course_groupings($course->id);
     foreach ($items as $item) {
         if ($item->groupingid && isset($groupings[$item->groupingid])) {
             $checkgroupings = true;
@@ -399,7 +399,7 @@ function elediachecklist_update_grades($checklist, $userid = 0) {
 
         // With groupings, need to update each user individually (as each has different groupings).
         foreach ($users as $uid => $user) {
-            $groupings = checklist_class::get_user_groupings($uid, $course->id);
+            $groupings = elediachecklist_class::get_user_groupings($uid, $course->id);
 
             $total = 0;
             $itemlist = [];
@@ -653,7 +653,7 @@ function elediachecklist_user_outline($course, $user, $mod, $checklist) {
     global $DB;
 
     // Handle groupings.
-    $groupingsql = checklist_class::get_grouping_sql($user->id, $checklist->course);
+    $groupingsql = elediachecklist_class::get_grouping_sql($user->id, $checklist->course);
 
     $tab = elediachecklist_tab('eledia_adminexamdates_itm'); // elediachecklist__item
     $sel  = 'checklist = ? AND userid = 0 AND itemoptional = '.CHECKLIST_OPTIONAL_NO;
@@ -708,7 +708,7 @@ function elediachecklist_user_outline($course, $user, $mod, $checklist) {
  * @return boolean
  */
 function elediachecklist_user_complete($course, $user, $mod, $checklist) {
-    $chk = new checklist_class($mod->id, $user->id, $checklist, $mod, $course);
+    $chk = new elediachecklist_class($mod->id, $user->id, $checklist, $mod, $course);
 
     $chk->user_complete();
 
@@ -774,7 +774,7 @@ function elediachecklist_print_overview($courses, &$htmlarray) {
             }
         }
 
-        $progressbar = checklist_class::print_user_progressbar($checklist->id, $USER->id,
+        $progressbar = elediachecklist_class::print_user_progressbar($checklist->id, $USER->id,
                                                                '270px', true, true,
                                                                !$config->showcompletemymoodle);
         if (empty($progressbar)) {
@@ -782,14 +782,14 @@ function elediachecklist_print_overview($courses, &$htmlarray) {
         }
 
         if ($showall) { // Show all items whether or not they are checked off (as this user is unable to check them off).
-            $groupingsql = checklist_class::get_grouping_sql($USER->id, $checklist->course);
+            $groupingsql = elediachecklist_class::get_grouping_sql($USER->id, $checklist->course);
             $tab = elediachecklist_tab('eledia_adminexamdates_itm'); // elediachecklist__item
             $dateitems = $DB->get_records_select($tab,
                                                  "checklist = ? AND duetime > 0 AND $groupingsql",
                                                  array($checklist->id),
                                                  'duetime');
         } else { // Show only items that have not been checked off.
-            $groupingsql = checklist_class::get_grouping_sql($USER->id, $checklist->course, 'i.');
+            $groupingsql = elediachecklist_class::get_grouping_sql($USER->id, $checklist->course, 'i.');
             $tab1 = elediachecklist_tab('eledia_adminexamdates_itm'); // elediachecklist__item
             $tab2 = elediachecklist_tab('eledia_adminexamdates_chk'); // elediachecklist__check
             $dateitems = $DB->get_records_sql("SELECT i.* FROM {".$tab1."} i
@@ -992,7 +992,7 @@ function elediachecklist_refresh_events($courseid = 0, $instance = null, $cm = n
     foreach ($checklists as $checklist) {
         if ($checklist->duedatesoncalendar) {
             $cm = get_coursemodule_from_instance('elediachecklist', $checklist->id, $checklist->course);
-            $chk = new checklist_class($cm->id, 0, $checklist, $cm, $course);
+            $chk = new elediachecklist_class($cm->id, 0, $checklist, $cm, $course);
             $chk->setallevents();
         }
     }
@@ -1059,7 +1059,7 @@ function elediachecklist_get_completion_state($course, $cm, $userid, $type) {
     $result = $type; // Default return value.
 
     if ($checklist->completionpercent) {
-        list($ticked, $total) = checklist_class::get_user_progress($cm->instance, $userid);
+        list($ticked, $total) = elediachecklist_class::get_user_progress($cm->instance, $userid);
         if ($checklist->completionpercenttype === 'items') {
             // Completionpercent is the actual number of items that need checking-off.
             $value = $checklist->completionpercent <= $ticked;

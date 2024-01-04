@@ -106,7 +106,7 @@ foreach ($checklists as $checklist) {
     }
 
     if ($canupdateown) {
-        $row[] = checklist_class::print_user_progressbar($checklist->id, $USER->id, '300px', true, true);
+        $row[] = elediachecklist_class::print_user_progressbar($checklist->id, $USER->id, '300px', true, true);
     }
 
     $table->data[] = $row;

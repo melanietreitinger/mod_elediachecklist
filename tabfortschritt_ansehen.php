@@ -57,6 +57,6 @@ if (has_capability('mod/elediachecklist:updateown', $context)) {
     $userid = $USER->id;
 }
 
-$chk = new checklist_class($cm->id, $userid, $checklist, $cm, $course);
+$chk = new elediachecklist_class($cm->id, $userid, $checklist, $cm, $course);
 
 $chk->tabfortschritt_ansehen();

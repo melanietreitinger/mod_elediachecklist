@@ -95,7 +95,7 @@ class behat_mod_elediachecklist extends behat_base {
         // Add each of the items to the checklist.
         $checklist = $DB->get_record('elediachecklist', array('name' => $checklistname), '*', MUST_EXIST);
         list($course, $cm) = get_course_and_cm_from_instance($checklist, 'checklist');
-        $chk = new checklist_class($cm->id, 0, $checklist, $cm, $course);
+        $chk = new elediachecklist_class($cm->id, 0, $checklist, $cm, $course);
 
         foreach ($data as $row) {
             $newitem = $optional;
@@ -180,7 +180,7 @@ class behat_mod_elediachecklist extends behat_base {
         $checklist = $DB->get_record('elediachecklist', array('name' => $checklistname), '*', MUST_EXIST);
         list($course, $cm) = get_course_and_cm_from_instance($checklist, 'checklist');
         $userid = $DB->get_field('user', 'id', array('username' => $username), MUST_EXIST);
-        $chk = new checklist_class($cm->id, $userid, $checklist, $cm, $course);
+        $chk = new elediachecklist_class($cm->id, $userid, $checklist, $cm, $course);
 
         $updatestudent = ($checklist->teacheredit != CHECKLIST_MARKING_TEACHER) && isset($firstrow['studentmark']);
         $updateteacher = ($checklist->teacheredit != CHECKLIST_MARKING_STUDENT) && isset($firstrow['teachermark']);

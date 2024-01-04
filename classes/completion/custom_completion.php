@@ -24,7 +24,7 @@
 
 namespace mod_elediachecklist\completion;
 
-use checklist_class;
+use elediachecklist_class;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -51,7 +51,7 @@ class custom_completion extends \core_completion\activity_custom_completion {
         }
 
         if ($rule === 'completionpercent') {
-            [$ticked, $total] = checklist_class::get_user_progress($checklist->id, $userid);
+            [$ticked, $total] = elediachecklist_class::get_user_progress($checklist->id, $userid);
             if ($checklist->completionpercenttype === 'items') {
                 // Completionpercent is the actual number of items that need checking-off.
                 $status = $checklist->completionpercent <= $ticked;

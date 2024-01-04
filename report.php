@@ -44,5 +44,5 @@ $url->param('studentid', $studentid);
 $PAGE->set_url($url);
 require_login($course, true, $cm);
 
-$chk = new checklist_class($cm->id, $studentid, $checklist, $cm, $course);
+$chk = new elediachecklist_class($cm->id, $studentid, $checklist, $cm, $course);
 $chk->report();

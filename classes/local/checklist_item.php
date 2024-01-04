@@ -572,7 +572,7 @@ class checklist_item extends data_object {
      * @param int $courseid
      */
     public static function add_grouping_names($items, $courseid) {
-        $groupings = \checklist_class::get_course_groupings($courseid);
+        $groupings = \elediachecklist_class::get_course_groupings($courseid);
         if (!$groupings) {
             return;
         }
