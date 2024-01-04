@@ -61,7 +61,7 @@ class checklist_item extends data_object {
     /** @var int */
     public $indent = 0;
     /** @var int */
-    public $itemoptional = CHECKLIST_OPTIONAL_NO;
+    public $itemoptional = ELEDIACHECKLIST_OPTIONAL_NO;
     /** @var int */
     public $duetime = 0;
     /** @var int */
@@ -71,7 +71,7 @@ class checklist_item extends data_object {
     /** @var int */
     public $moduleid = 0;
     /** @var int */
-    public $hidden = CHECKLIST_HIDDEN_NO;
+    public $hidden = ELEDIACHECKLIST_HIDDEN_NO;
     /** @var int */
     public $groupingid = 0;
     /** @var int|null */
@@ -85,7 +85,7 @@ class checklist_item extends data_object {
     /** @var int */
     public $usertimestamp = 0;
     /** @var int */
-    public $teachermark = CHECKLIST_TEACHERMARK_UNDECIDED;
+    public $teachermark = ELEDIACHECKLIST_TEACHERMARK_UNDECIDED;
     /** @var int */
     public $teachertimestamp = 0;
     /** @var int|null */
@@ -190,7 +190,7 @@ class checklist_item extends data_object {
         if ($teachermark !== null) {
             if (!checklist_check::teachermark_valid($teachermark)) {
                 debugging('Unexpected teachermark value: '.$teachermark);
-                $teachermark = CHECKLIST_TEACHERMARK_UNDECIDED;
+                $teachermark = ELEDIACHECKLIST_TEACHERMARK_UNDECIDED;
             }
             $this->teachermark = $teachermark;
         }
@@ -212,7 +212,7 @@ class checklist_item extends data_object {
             // User custom items are always checked-off by students (regardless of checklist settings).
             return $this->usertimestamp > 0;
         } else {
-            return ($this->teachermark == CHECKLIST_TEACHERMARK_YES);
+            return ($this->teachermark == ELEDIACHECKLIST_TEACHERMARK_YES);
         }
     }
 
@@ -237,7 +237,7 @@ class checklist_item extends data_object {
      * @return bool
      */
     public function is_heading() {
-        return ($this->itemoptional == CHECKLIST_OPTIONAL_HEADING);
+        return ($this->itemoptional == ELEDIACHECKLIST_OPTIONAL_HEADING);
     }
 
     /**
@@ -245,7 +245,7 @@ class checklist_item extends data_object {
      * @return bool
      */
     public function is_required() {
-        return ($this->itemoptional == CHECKLIST_OPTIONAL_NO);
+        return ($this->itemoptional == ELEDIACHECKLIST_OPTIONAL_NO);
     }
 
     /**
@@ -253,7 +253,7 @@ class checklist_item extends data_object {
      * @return bool
      */
     public function is_optional() {
-        return ($this->itemoptional == CHECKLIST_OPTIONAL_YES);
+        return ($this->itemoptional == ELEDIACHECKLIST_OPTIONAL_YES);
     }
 
     /**
@@ -278,9 +278,9 @@ class checklist_item extends data_object {
         static $images = null;
         if ($images === null) {
             $images = [
-                CHECKLIST_TEACHERMARK_YES => $this->image_url('tick_box', 'mod_elediachecklist'),
-                CHECKLIST_TEACHERMARK_NO => $this->image_url('cross_box', 'mod_elediachecklist'),
-                CHECKLIST_TEACHERMARK_UNDECIDED => $this->image_url('empty_box', 'mod_elediachecklist'),
+                ELEDIACHECKLIST_TEACHERMARK_YES => $this->image_url('tick_box', 'mod_elediachecklist'),
+                ELEDIACHECKLIST_TEACHERMARK_NO => $this->image_url('cross_box', 'mod_elediachecklist'),
+                ELEDIACHECKLIST_TEACHERMARK_UNDECIDED => $this->image_url('empty_box', 'mod_elediachecklist'),
             ];
         }
         return $images[$this->teachermark];
@@ -294,9 +294,9 @@ class checklist_item extends data_object {
         static $text = null;
         if ($text === null) {
             $text = [
-                CHECKLIST_TEACHERMARK_YES => get_string('teachermarkyes', 'mod_elediachecklist'),
-                CHECKLIST_TEACHERMARK_NO => get_string('teachermarkno', 'mod_elediachecklist'),
-                CHECKLIST_TEACHERMARK_UNDECIDED => get_string('teachermarkundecided', 'mod_elediachecklist'),
+                ELEDIACHECKLIST_TEACHERMARK_YES => get_string('teachermarkyes', 'mod_elediachecklist'),
+                ELEDIACHECKLIST_TEACHERMARK_NO => get_string('teachermarkno', 'mod_elediachecklist'),
+                ELEDIACHECKLIST_TEACHERMARK_UNDECIDED => get_string('teachermarkundecided', 'mod_elediachecklist'),
             ];
         }
         return $text[$this->teachermark];
@@ -310,9 +310,9 @@ class checklist_item extends data_object {
         static $classes = null;
         if ($classes === null) {
             $classes = [
-                CHECKLIST_TEACHERMARK_YES => 'teachermarkyes',
-                CHECKLIST_TEACHERMARK_NO => 'teachermarkno',
-                CHECKLIST_TEACHERMARK_UNDECIDED => 'teachermarkundecided',
+                ELEDIACHECKLIST_TEACHERMARK_YES => 'teachermarkyes',
+                ELEDIACHECKLIST_TEACHERMARK_NO => 'teachermarkno',
+                ELEDIACHECKLIST_TEACHERMARK_UNDECIDED => 'teachermarkundecided',
             ];
         }
         return $classes[$this->teachermark];
@@ -322,13 +322,13 @@ class checklist_item extends data_object {
      * Toggle the 'hidden' status for the item.
      */
     public function toggle_hidden() {
-        if ($this->hidden == CHECKLIST_HIDDEN_BYMODULE) {
+        if ($this->hidden == ELEDIACHECKLIST_HIDDEN_BYMODULE) {
             return; // Do not override items linked to hidden Moodle activities.
         }
-        if ($this->hidden == CHECKLIST_HIDDEN_NO) {
-            $this->hidden = CHECKLIST_HIDDEN_MANUAL;
+        if ($this->hidden == ELEDIACHECKLIST_HIDDEN_NO) {
+            $this->hidden = ELEDIACHECKLIST_HIDDEN_MANUAL;
         } else {
-            $this->hidden = CHECKLIST_HIDDEN_NO;
+            $this->hidden = ELEDIACHECKLIST_HIDDEN_NO;
         }
         $this->update();
     }
@@ -340,10 +340,10 @@ class checklist_item extends data_object {
         if (!$this->moduleid) {
             return;
         }
-        if ($this->hidden != CHECKLIST_HIDDEN_NO) {
+        if ($this->hidden != ELEDIACHECKLIST_HIDDEN_NO) {
             return;
         }
-        $this->hidden = CHECKLIST_HIDDEN_MANUAL;
+        $this->hidden = ELEDIACHECKLIST_HIDDEN_MANUAL;
         $this->update();
     }
 
@@ -354,10 +354,10 @@ class checklist_item extends data_object {
         if (!$this->moduleid) {
             return;
         }
-        if ($this->hidden != CHECKLIST_HIDDEN_MANUAL) {
+        if ($this->hidden != ELEDIACHECKLIST_HIDDEN_MANUAL) {
             return;
         }
-        $this->hidden = CHECKLIST_HIDDEN_NO;
+        $this->hidden = ELEDIACHECKLIST_HIDDEN_NO;
         $this->update();
     }
 

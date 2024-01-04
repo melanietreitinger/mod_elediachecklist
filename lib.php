@@ -24,44 +24,44 @@
 defined('MOODLE_INTERNAL') || die();
 
 /** Do not sent emails on completion */
-define("CHECKLIST_EMAIL_NO", 0);
+define("ELEDIACHECKLIST_EMAIL_NO", 0);
 /** Send emails to students on completion */
-define("CHECKLIST_EMAIL_STUDENT", 1);
+define("ELEDIACHECKLIST_EMAIL_STUDENT", 1);
 /** Send emails to teachers on completion */
-define("CHECKLIST_EMAIL_TEACHER", 2);
+define("ELEDIACHECKLIST_EMAIL_TEACHER", 2);
 /** Send emails to students and teachers on completion */
-define("CHECKLIST_EMAIL_BOTH", 3);
+define("ELEDIACHECKLIST_EMAIL_BOTH", 3);
 
 /** Teacher marked item as "No" */
-define("CHECKLIST_TEACHERMARK_NO", 2);
+define("ELEDIACHECKLIST_TEACHERMARK_NO", 2);
 /** Teacher marked item as "Yes" */
-define("CHECKLIST_TEACHERMARK_YES", 1);
+define("ELEDIACHECKLIST_TEACHERMARK_YES", 1);
 /** No teacher mark */
-define("CHECKLIST_TEACHERMARK_UNDECIDED", 0);
+define("ELEDIACHECKLIST_TEACHERMARK_UNDECIDED", 0);
 
 /** Checklist updated by students */
-define("CHECKLIST_MARKING_STUDENT", 0);
+define("ELEDIACHECKLIST_MARKING_STUDENT", 0);
 /** Checklist updated by teachers */
-define("CHECKLIST_MARKING_TEACHER", 1);
+define("ELEDIACHECKLIST_MARKING_TEACHER", 1);
 /** Checklist updated by students and teachers */
-define("CHECKLIST_MARKING_BOTH", 2);
+define("ELEDIACHECKLIST_MARKING_BOTH", 2);
 
 /** Linked activities should not update item status */
-define("CHECKLIST_AUTOUPDATE_NO", 0);
+define("ELEDIACHECKLIST_AUTOUPDATE_NO", 0);
 /** Linked activites should update item status */
-define("CHECKLIST_AUTOUPDATE_YES", 2);
+define("ELEDIACHECKLIST_AUTOUPDATE_YES", 2);
 /** Linked activites should update items status, but can be overridden by students */
-define("CHECKLIST_AUTOUPDATE_YES_OVERRIDE", 1);
+define("ELEDIACHECKLIST_AUTOUPDATE_YES_OVERRIDE", 1);
 
 /** Do not import activities into the checklist */
-define("CHECKLIST_AUTOPOPULATE_NO", 0);
+define("ELEDIACHECKLIST_AUTOPOPULATE_NO", 0);
 /** Import activities from the current section into the checklist */
-define("CHECKLIST_AUTOPOPULATE_SECTION", 2);
+define("ELEDIACHECKLIST_AUTOPOPULATE_SECTION", 2);
 /** Import all activities in the course into the checklist */
-define("CHECKLIST_AUTOPOPULATE_COURSE", 1);
+define("ELEDIACHECKLIST_AUTOPOPULATE_COURSE", 1);
 
 /** Maximum indend allowed */
-define("CHECKLIST_MAX_INDENT", 10);
+define("ELEDIACHECKLIST_MAX_INDENT", 10);
 
 global $CFG;
 require_once(__DIR__.'/locallib.php');
@@ -263,8 +263,8 @@ function elediachecklist_update_instance($checklist) {
         if (!$oldautoupdate) {
             $chk->update_all_autoupdate_checks();
         } else {
-            $oldautoteacher = ($oldteacheredit == CHECKLIST_MARKING_TEACHER);
-            $newautoteacher = ($newteacheredit == CHECKLIST_MARKING_TEACHER);
+            $oldautoteacher = ($oldteacheredit == ELEDIACHECKLIST_MARKING_TEACHER);
+            $newautoteacher = ($newteacheredit == ELEDIACHECKLIST_MARKING_TEACHER);
             if ($oldautoteacher != $newautoteacher) {
                 // Just switched to/from teacher-only marking => automatic checkmarks need updating
                 // (as they are updating a different value from before).
@@ -347,8 +347,8 @@ function elediachecklist_update_grades($checklist, $userid = 0) {
     $params = array(
         'checklist' => $checklist->id,
         'userid' => 0,
-        'itemoptional' => CHECKLIST_OPTIONAL_NO,
-        'hidden' => CHECKLIST_HIDDEN_NO
+        'itemoptional' => ELEDIACHECKLIST_OPTIONAL_NO,
+        'hidden' => ELEDIACHECKLIST_HIDDEN_NO
     );
     $items = \mod_elediachecklist\local\checklist_item::fetch_all($params);
 
@@ -372,7 +372,7 @@ function elediachecklist_update_grades($checklist, $userid = 0) {
         }
     }
 
-    if ($checklist->teacheredit == CHECKLIST_MARKING_STUDENT) {
+    if ($checklist->teacheredit == ELEDIACHECKLIST_MARKING_STUDENT) {
         $date = ', MAX(c.usertimestamp) AS datesubmitted';
         $where = 'c.usertimestamp > 0';
     } else {
@@ -507,8 +507,8 @@ function elediachecklist_update_grades($checklist, $userid = 0) {
                     $details->checklist = s($checklist->name);
                     $details->coursename = $course->fullname;
 
-                    if ($checklist->emailoncomplete == CHECKLIST_EMAIL_TEACHER
-                        || $checklist->emailoncomplete == CHECKLIST_EMAIL_BOTH
+                    if ($checklist->emailoncomplete == ELEDIACHECKLIST_EMAIL_TEACHER
+                        || $checklist->emailoncomplete == ELEDIACHECKLIST_EMAIL_BOTH
                     ) {
                         // Email will be sent to the all teachers who have capability.
                         $subj = get_string('emailoncompletesubject', 'elediachecklist', $details);
@@ -537,8 +537,8 @@ function elediachecklist_update_grades($checklist, $userid = 0) {
                             }
                         }
                     }
-                    if ($checklist->emailoncomplete == CHECKLIST_EMAIL_STUDENT
-                        || $checklist->emailoncomplete == CHECKLIST_EMAIL_BOTH
+                    if ($checklist->emailoncomplete == ELEDIACHECKLIST_EMAIL_STUDENT
+                        || $checklist->emailoncomplete == ELEDIACHECKLIST_EMAIL_BOTH
                     ) {
                         // Email will be sent to the student who completes this checklist.
                         $subj = get_string('emailoncompletesubjectown', 'elediachecklist', $details);
@@ -667,7 +667,7 @@ function elediachecklist_user_outline($course, $user, $mod, $checklist) {
     [$isql, $iparams] = $DB->get_in_or_equal(array_keys($items));
 
     $sql = "userid = ? AND item $isql AND ";
-    if ($checklist->teacheredit == CHECKLIST_MARKING_STUDENT) {
+    if ($checklist->teacheredit == ELEDIACHECKLIST_MARKING_STUDENT) {
         $sql .= 'usertimestamp > 0';
         $order = 'usertimestamp DESC';
     } else {
@@ -685,7 +685,7 @@ function elediachecklist_user_outline($course, $user, $mod, $checklist) {
 
         $ticked = count($checks);
         $check = reset($checks);
-        if ($checklist->teacheredit == CHECKLIST_MARKING_STUDENT) {
+        if ($checklist->teacheredit == ELEDIACHECKLIST_MARKING_STUDENT) {
             $return->time = $check->usertimestamp;
         } else {
             $return->time = $check->teachertimestamp;
@@ -762,7 +762,7 @@ function elediachecklist_print_overview($courses, &$htmlarray) {
         $context = context_module::instance($checklist->coursemodule);
 
         // If only the student is responsible for updating the checklist.
-        if ($checklist->teacheredit == CHECKLIST_MARKING_STUDENT) {
+        if ($checklist->teacheredit == ELEDIACHECKLIST_MARKING_STUDENT) {
             if ($showall = !has_capability('mod/elediachecklist:updateown', $context, null, false)) {
                 if ($config->showupdateablemymoodle) {
                     continue;

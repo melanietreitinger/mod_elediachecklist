@@ -63,9 +63,9 @@ class mod_elediachecklist_mod_form extends moodleform_mod {
         $mform->addElement('select', 'useritemsallowed', get_string('useritemsallowed', 'elediachecklist'), $ynoptions);
 
         $teditoptions = array(
-            CHECKLIST_MARKING_STUDENT => get_string('teachernoteditcheck', 'elediachecklist'),
-            CHECKLIST_MARKING_TEACHER => get_string('teacheroverwritecheck', 'elediachecklist'),
-            CHECKLIST_MARKING_BOTH => get_string('teacheralongsidecheck', 'elediachecklist')
+            ELEDIACHECKLIST_MARKING_STUDENT => get_string('teachernoteditcheck', 'elediachecklist'),
+            ELEDIACHECKLIST_MARKING_TEACHER => get_string('teacheroverwritecheck', 'elediachecklist'),
+            ELEDIACHECKLIST_MARKING_BOTH => get_string('teacheralongsidecheck', 'elediachecklist')
         );
         $mform->addElement('select', 'teacheredit', get_string('teacheredit', 'elediachecklist'), $teditoptions);
 
@@ -80,19 +80,19 @@ class mod_elediachecklist_mod_form extends moodleform_mod {
         $mform->setType('maxgrade', PARAM_INT);
 
         $emailrecipients = array(
-            CHECKLIST_EMAIL_NO => get_string('no'),
-            CHECKLIST_EMAIL_STUDENT => get_string('teachernoteditcheck', 'elediachecklist'),
-            CHECKLIST_EMAIL_TEACHER => get_string('teacheroverwritecheck', 'elediachecklist'),
-            CHECKLIST_EMAIL_BOTH => get_string('teacheralongsidecheck', 'elediachecklist')
+            ELEDIACHECKLIST_EMAIL_NO => get_string('no'),
+            ELEDIACHECKLIST_EMAIL_STUDENT => get_string('teachernoteditcheck', 'elediachecklist'),
+            ELEDIACHECKLIST_EMAIL_TEACHER => get_string('teacheroverwritecheck', 'elediachecklist'),
+            ELEDIACHECKLIST_EMAIL_BOTH => get_string('teacheralongsidecheck', 'elediachecklist')
         );
         $mform->addElement('select', 'emailoncomplete', get_string('emailoncomplete', 'elediachecklist'), $emailrecipients);
         $mform->setDefault('emailoncomplete', 0);
         $mform->addHelpButton('emailoncomplete', 'emailoncomplete', 'elediachecklist');
 
         $autopopulateoptions = array(
-            CHECKLIST_AUTOPOPULATE_NO => get_string('no'),
-            CHECKLIST_AUTOPOPULATE_SECTION => get_string('importfromsection', 'elediachecklist'),
-            CHECKLIST_AUTOPOPULATE_COURSE => get_string('importfromcourse', 'elediachecklist')
+            ELEDIACHECKLIST_AUTOPOPULATE_NO => get_string('no'),
+            ELEDIACHECKLIST_AUTOPOPULATE_SECTION => get_string('importfromsection', 'elediachecklist'),
+            ELEDIACHECKLIST_AUTOPOPULATE_COURSE => get_string('importfromcourse', 'elediachecklist')
         );
         $mform->addElement('select', 'autopopulate', get_string('autopopulate', 'elediachecklist'), $autopopulateoptions);
         $mform->setDefault('autopopulate', 0);
@@ -106,9 +106,9 @@ class mod_elediachecklist_mod_form extends moodleform_mod {
         }
 
         $autoupdateoptions = array(
-            CHECKLIST_AUTOUPDATE_NO => get_string('no'),
-            CHECKLIST_AUTOUPDATE_YES => get_string('yesnooverride', 'elediachecklist'),
-            CHECKLIST_AUTOUPDATE_YES_OVERRIDE => get_string('yesoverride', 'elediachecklist')
+            ELEDIACHECKLIST_AUTOUPDATE_NO => get_string('no'),
+            ELEDIACHECKLIST_AUTOUPDATE_YES => get_string('yesnooverride', 'elediachecklist'),
+            ELEDIACHECKLIST_AUTOUPDATE_YES_OVERRIDE => get_string('yesoverride', 'elediachecklist')
         );
         $mform->addElement('select', 'autoupdate', get_string($str, 'elediachecklist'), $autoupdateoptions);
         $mform->setDefault('autoupdate', 1);

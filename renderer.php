@@ -275,9 +275,9 @@ class mod_elediachecklist_renderer extends plugin_renderer_base {
                     if (!$item->is_heading()) {
                         if ($status->is_viewother()) {
                             $opts = [
-                                CHECKLIST_TEACHERMARK_UNDECIDED => '',
-                                CHECKLIST_TEACHERMARK_YES => get_string('yes'),
-                                CHECKLIST_TEACHERMARK_NO => get_string('no'),
+                                ELEDIACHECKLIST_TEACHERMARK_UNDECIDED => '',
+                                ELEDIACHECKLIST_TEACHERMARK_YES => get_string('yes'),
+                                ELEDIACHECKLIST_TEACHERMARK_NO => get_string('no'),
                             ];
                             $attr = ['id' => 'item'.$item->id]; // TODO davo - fix itemname handling.
                             if ($status->is_teachermarklocked() && $item->is_checked_teacher()) {
@@ -407,7 +407,7 @@ class mod_elediachecklist_renderer extends plugin_renderer_base {
                                     '" method="post">';
                                 echo html_writer::input_hidden_params($thisitemurl);
                                 echo '<input type="text" class="form-control form-text-inline" size="'.
-                                    CHECKLIST_TEXT_INPUT_WIDTH.'" name="displaytext" value="'.s($text).
+                                    ELEDIACHECKLIST_TEXT_INPUT_WIDTH.'" name="displaytext" value="'.s($text).
                                     '" id="updateitembox" />';
                                 echo '<input type="submit" class="btn btn-secondary" name="updateitem" value="'.
                                     get_string('updateitem', 'elediachecklist').'" />';
@@ -476,7 +476,7 @@ class mod_elediachecklist_renderer extends plugin_renderer_base {
                         echo '<input type="checkbox" class="checkbox-inline" disabled="disabled" />';
                     }
                     echo '<input type="text" class="form-control form-text-inline" size="'.
-                        CHECKLIST_TEXT_INPUT_WIDTH.'" name="displaytext" value="" id="additembox" />';
+                        ELEDIACHECKLIST_TEXT_INPUT_WIDTH.'" name="displaytext" value="" id="additembox" />';
                     echo '<input type="submit" class="btn btn-secondary" name="additem" value="'.
                         get_string('additem', 'elediachecklist').'" />';
                     echo '<br />';
@@ -594,10 +594,10 @@ class mod_elediachecklist_renderer extends plugin_renderer_base {
 
         if ($status->is_autoupdatewarning()) {
             switch ($status->get_autoupdatewarning()) {
-                case CHECKLIST_MARKING_STUDENT:
+                case ELEDIACHECKLIST_MARKING_STUDENT:
                     echo '<p>'.get_string('autoupdatewarning_student', 'elediachecklist').'</p>';
                     break;
-                case CHECKLIST_MARKING_TEACHER:
+                case ELEDIACHECKLIST_MARKING_TEACHER:
                     echo '<p>'.get_string('autoupdatewarning_teacher', 'elediachecklist').'</p>';
                     break;
                 default:
@@ -680,7 +680,7 @@ class mod_elediachecklist_renderer extends plugin_renderer_base {
                 }
 
                 echo html_writer::start_span('', array('style' => 'display: inline-block; width: 16px;'));
-                if ($autoitem && $item->hidden != CHECKLIST_HIDDEN_BYMODULE) {
+                if ($autoitem && $item->hidden != ELEDIACHECKLIST_HIDDEN_BYMODULE) {
                     echo html_writer::checkbox('items['.$item->id.']', $item->id, false, '',
                                                array('title' => $item->displaytext, 'class' => 'checkbox-inline'));
                 }
@@ -755,7 +755,7 @@ class mod_elediachecklist_renderer extends plugin_renderer_base {
                         $title = get_string('unindentitem', 'elediachecklist');
                         echo $this->output->pix_icon('t/left', $title, 'moodle', ['title' => $title]).'</a>';
                     }
-                    if (!$autoitem && ($item->indent < CHECKLIST_MAX_INDENT) && (($lastindent + 1) > $currindent)) {
+                    if (!$autoitem && ($item->indent < ELEDIACHECKLIST_MAX_INDENT) && (($lastindent + 1) > $currindent)) {
                         echo '<a href="'.$itemurl->out(true, array('action' => 'indentitem')).'">';
                         $title = get_string('indentitem', 'elediachecklist');
                         echo $this->output->pix_icon('t/right', $title, 'moodle', ['title' => $title]).'</a>';
@@ -777,9 +777,9 @@ class mod_elediachecklist_renderer extends plugin_renderer_base {
 
                     // Hide/delete item.
                     if ($autoitem) {
-                        if ($item->hidden != CHECKLIST_HIDDEN_BYMODULE) {
+                        if ($item->hidden != ELEDIACHECKLIST_HIDDEN_BYMODULE) {
                             echo '&nbsp;<a href="'.$itemurl->out(true, array('action' => 'deleteitem')).'">';
-                            if ($item->hidden == CHECKLIST_HIDDEN_MANUAL) {
+                            if ($item->hidden == ELEDIACHECKLIST_HIDDEN_MANUAL) {
                                 $title = get_string('show');
                                 echo $this->output->pix_icon('t/show', $title, 'moodle', ['title' => $title]).'</a>';
                             } else {
@@ -1033,7 +1033,7 @@ ENDSCRIPT;
         $out .= '<input type="hidden" name="indent" value="'.$currindent.'" />';
         $out .= $this->output->pix_icon('tick_box', '', 'mod_elediachecklist');
         $out .= '<input type="text" class="form-control form-text-inline" size="'.
-            CHECKLIST_TEXT_INPUT_WIDTH.'" name="displaytext" value="" id="additembox" />';
+            ELEDIACHECKLIST_TEXT_INPUT_WIDTH.'" name="displaytext" value="" id="additembox" />';
         $out .= '<input type="submit" class="btn btn-secondary" name="additem" value="'.
             get_string('additem', 'elediachecklist').'" />';
         if (!$addingatend) {
@@ -1068,7 +1068,7 @@ ENDSCRIPT;
         $out = '';
 
         $out .= '<input type="text" class="form-control form-text-inline" size="'.
-            CHECKLIST_TEXT_INPUT_WIDTH.'" name="displaytext" value="'.
+            ELEDIACHECKLIST_TEXT_INPUT_WIDTH.'" name="displaytext" value="'.
             s($item->displaytext).'" id="updateitembox" />';
         $out .= '<input type="submit" class="btn btn-secondary" name="updateitem" value="'.
             get_string('updateitem', 'elediachecklist').'" />';

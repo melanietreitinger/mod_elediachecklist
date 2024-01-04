@@ -71,15 +71,15 @@ class behat_mod_elediachecklist extends behat_base {
             'text'
         );
         $optional = array(
-            'required' => CHECKLIST_OPTIONAL_NO,
+            'required' => ELEDIACHECKLIST_OPTIONAL_NO,
             'duetime' => 0,
         );
 
         // Valid settings for field 'required'.
         $requiredmap = array(
-            'required' => CHECKLIST_OPTIONAL_NO,
-            'optional' => CHECKLIST_OPTIONAL_YES,
-            'heading' => CHECKLIST_OPTIONAL_HEADING,
+            'required' => ELEDIACHECKLIST_OPTIONAL_NO,
+            'optional' => ELEDIACHECKLIST_OPTIONAL_YES,
+            'heading' => ELEDIACHECKLIST_OPTIONAL_HEADING,
         );
 
         $data = $table->getHash();
@@ -161,9 +161,9 @@ class behat_mod_elediachecklist extends behat_base {
         );
         // Valid settings for field 'teachermark'.
         $teachermarkmap = array(
-            'none' => CHECKLIST_TEACHERMARK_UNDECIDED,
-            'yes' => CHECKLIST_TEACHERMARK_YES,
-            'no' => CHECKLIST_TEACHERMARK_NO,
+            'none' => ELEDIACHECKLIST_TEACHERMARK_UNDECIDED,
+            'yes' => ELEDIACHECKLIST_TEACHERMARK_YES,
+            'no' => ELEDIACHECKLIST_TEACHERMARK_NO,
         );
 
         $data = $table->getHash();
@@ -182,8 +182,8 @@ class behat_mod_elediachecklist extends behat_base {
         $userid = $DB->get_field('user', 'id', array('username' => $username), MUST_EXIST);
         $chk = new elediachecklist_class($cm->id, $userid, $checklist, $cm, $course);
 
-        $updatestudent = ($checklist->teacheredit != CHECKLIST_MARKING_TEACHER) && isset($firstrow['studentmark']);
-        $updateteacher = ($checklist->teacheredit != CHECKLIST_MARKING_STUDENT) && isset($firstrow['teachermark']);
+        $updatestudent = ($checklist->teacheredit != ELEDIACHECKLIST_MARKING_TEACHER) && isset($firstrow['studentmark']);
+        $updateteacher = ($checklist->teacheredit != ELEDIACHECKLIST_MARKING_STUDENT) && isset($firstrow['teachermark']);
         if (!$updateteacher && !$updatestudent) {
             throw new Exception('Checklist update must specify a teachermark (for teacher/both checklists) or a studentmark '.
                                 '(for student/both checklists)');

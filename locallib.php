@@ -32,20 +32,20 @@ global $CFG;
 require_once($CFG->dirroot.'/mod/elediachecklist/lib.php');
 
 /** Width of text input */
-define("CHECKLIST_TEXT_INPUT_WIDTH", 45);
+define("ELEDIACHECKLIST_TEXT_INPUT_WIDTH", 45);
 /** Item is not optional */
-define("CHECKLIST_OPTIONAL_NO", 0);
+define("ELEDIACHECKLIST_OPTIONAL_NO", 0);
 /** Item is optional */
-define("CHECKLIST_OPTIONAL_YES", 1);
+define("ELEDIACHECKLIST_OPTIONAL_YES", 1);
 /** Item is a heading */
-define("CHECKLIST_OPTIONAL_HEADING", 2);
+define("ELEDIACHECKLIST_OPTIONAL_HEADING", 2);
 
 /** Item is not hidden */
-define("CHECKLIST_HIDDEN_NO", 0);
+define("ELEDIACHECKLIST_HIDDEN_NO", 0);
 /** Item is manually hidden */
-define("CHECKLIST_HIDDEN_MANUAL", 1);
+define("ELEDIACHECKLIST_HIDDEN_MANUAL", 1);
 /** Item is linked to a hidden activity */
-define("CHECKLIST_HIDDEN_BYMODULE", 2);
+define("ELEDIACHECKLIST_HIDDEN_BYMODULE", 2);
 
 /**
  * Class elediachecklist_class
@@ -687,7 +687,7 @@ class elediachecklist_class {
         reset($this->items);
 
         $importsection = -1;
-        if ($this->checklist->autopopulate == CHECKLIST_AUTOPOPULATE_SECTION) {
+        if ($this->checklist->autopopulate == ELEDIACHECKLIST_AUTOPOPULATE_SECTION) {
             foreach ($mods->get_sections() as $num => $section) {
                 if (in_array($this->cm->id, $section)) {
                     $importsection = $num;
@@ -724,7 +724,7 @@ class elediachecklist_class {
             $sectionheading = 0;
             while ($item = current($this->items)) {
                 // Search from current position.
-                if (($item->moduleid == $section) && ($item->itemoptional == CHECKLIST_OPTIONAL_HEADING)) {
+                if (($item->moduleid == $section) && ($item->itemoptional == ELEDIACHECKLIST_OPTIONAL_HEADING)) {
                     $sectionheading = $item->id;
                     break;
                 }
@@ -734,7 +734,7 @@ class elediachecklist_class {
             if (!$sectionheading) {
                 // Search again from the start.
                 foreach ($this->items as $item) {
-                    if (($item->moduleid == $section) && ($item->itemoptional == CHECKLIST_OPTIONAL_HEADING)) {
+                    if (($item->moduleid == $section) && ($item->itemoptional == ELEDIACHECKLIST_OPTIONAL_HEADING)) {
                         $sectionheading = $item->id;
                         break;
                     }
@@ -747,7 +747,7 @@ class elediachecklist_class {
                 $sectionname = get_string('section').' '.$section;
             }
             if (!$sectionheading) {
-                $sectionheading = $this->additem($sectionname, 0, 0, false, false, $section, CHECKLIST_OPTIONAL_HEADING);
+                $sectionheading = $this->additem($sectionname, 0, 0, false, false, $section, ELEDIACHECKLIST_OPTIONAL_HEADING);
                 reset($this->items);
             } else {
                 if ($this->items[$sectionheading]->displaytext != $sectionname) {
@@ -779,7 +779,7 @@ class elediachecklist_class {
                 $foundit = false;
                 while ($item = current($this->items)) {
                     // Search list from current position (will usually be the next item).
-                    if (($item->moduleid == $cmid) && ($item->itemoptional != CHECKLIST_OPTIONAL_HEADING)) {
+                    if (($item->moduleid == $cmid) && ($item->itemoptional != ELEDIACHECKLIST_OPTIONAL_HEADING)) {
                         $foundit = $item;
                         break;
                     }
@@ -792,7 +792,7 @@ class elediachecklist_class {
                 if (!$foundit) {
                     // Search list again from the start (just in case).
                     foreach ($this->items as $item) {
-                        if (($item->moduleid == $cmid) && ($item->itemoptional != CHECKLIST_OPTIONAL_HEADING)) {
+                        if (($item->moduleid == $cmid) && ($item->itemoptional != ELEDIACHECKLIST_OPTIONAL_HEADING)) {
                             $foundit = $item;
                             break;
                         }
@@ -809,9 +809,9 @@ class elediachecklist_class {
                     if ($item->displaytext != $modname) {
                         $this->updateitem($item->id, $modname);
                     }
-                    if (($item->hidden == CHECKLIST_HIDDEN_BYMODULE) && $mods->get_cm($cmid)->visible) {
+                    if (($item->hidden == ELEDIACHECKLIST_HIDDEN_BYMODULE) && $mods->get_cm($cmid)->visible) {
                         // Course module was hidden and now is not.
-                        $item->hidden = CHECKLIST_HIDDEN_NO;
+                        $item->hidden = ELEDIACHECKLIST_HIDDEN_NO;
                         $upd = new stdClass;
                         $upd->id = $item->id;
                         $upd->hidden = $item->hidden;
@@ -819,9 +819,9 @@ class elediachecklist_class {
                         $DB->update_record($tab, $upd);
                         $changes = true;
 
-                    } else if (($item->hidden == CHECKLIST_HIDDEN_NO) && !$mods->get_cm($cmid)->visible) {
+                    } else if (($item->hidden == ELEDIACHECKLIST_HIDDEN_NO) && !$mods->get_cm($cmid)->visible) {
                         // Course module is now hidden.
-                        $item->hidden = CHECKLIST_HIDDEN_BYMODULE;
+                        $item->hidden = ELEDIACHECKLIST_HIDDEN_BYMODULE;
                         $upd = new stdClass;
                         $upd->id = $item->id;
                         $upd->hidden = $item->hidden;
@@ -853,8 +853,8 @@ class elediachecklist_class {
                         }
                     }
                 } else {
-                    $hidden = $mods->get_cm($cmid)->visible ? CHECKLIST_HIDDEN_NO : CHECKLIST_HIDDEN_BYMODULE;
-                    $itemid = $this->additem($modname, 0, 0, $nextpos, false, $cmid, CHECKLIST_OPTIONAL_NO, $hidden);
+                    $hidden = $mods->get_cm($cmid)->visible ? ELEDIACHECKLIST_HIDDEN_NO : ELEDIACHECKLIST_HIDDEN_BYMODULE;
+                    $itemid = $this->additem($modname, 0, 0, $nextpos, false, $cmid, ELEDIACHECKLIST_OPTIONAL_NO, $hidden);
                     $changes = true;
                     reset($this->items);
                     $this->items[$itemid]->stillexists = true;
@@ -1931,7 +1931,7 @@ class elediachecklist_class {
             return null;
         }
 
-        $teacherprogress = ($this->checklist->teacheredit != CHECKLIST_MARKING_STUDENT);
+        $teacherprogress = ($this->checklist->teacheredit != ELEDIACHECKLIST_MARKING_STUDENT);
 
         $totalitems = 0;
         $requireditems = 0;
@@ -2003,9 +2003,9 @@ class elediachecklist_class {
         }
         if ($status->is_canupdateown() || $status->is_viewother() || $status->is_userreport()) {
             $status->set_showprogressbar(true);
-            $showteachermark = in_array($this->checklist->teacheredit, [CHECKLIST_MARKING_TEACHER, CHECKLIST_MARKING_BOTH]);
+            $showteachermark = in_array($this->checklist->teacheredit, [ELEDIACHECKLIST_MARKING_TEACHER, ELEDIACHECKLIST_MARKING_BOTH]);
             $status->set_showteachermark($showteachermark);
-            $showcheckbox = in_array($this->checklist->teacheredit, [CHECKLIST_MARKING_STUDENT, CHECKLIST_MARKING_BOTH]);
+            $showcheckbox = in_array($this->checklist->teacheredit, [ELEDIACHECKLIST_MARKING_STUDENT, ELEDIACHECKLIST_MARKING_BOTH]);
             $status->set_showcheckbox($showcheckbox);
         }
         if ($status->is_showteachermark() && $status->is_viewother() && $this->checklist->lockteachermarks) {
@@ -2018,7 +2018,7 @@ class elediachecklist_class {
                 checklist_item::add_teacher_names($this->items);
             }
         }
-        $status->set_overrideauto($this->checklist->autoupdate != CHECKLIST_AUTOUPDATE_YES);
+        $status->set_overrideauto($this->checklist->autoupdate != ELEDIACHECKLIST_AUTOUPDATE_YES);
         if ($status->is_canaddown()) {
             if ($this->useredit) {
                 $status->set_addown(true);
@@ -2134,9 +2134,9 @@ class elediachecklist_class {
         }
 
         if ($this->checklist->autoupdate && $this->checklist->autopopulate) {
-            if ($this->checklist->teacheredit == CHECKLIST_MARKING_TEACHER) {
+            if ($this->checklist->teacheredit == ELEDIACHECKLIST_MARKING_TEACHER) {
                 echo '<p>'.get_string('autoupdatewarning_teacher', 'checklist').'</p>';
-            } else if ($this->checklist->teacheredit == CHECKLIST_MARKING_BOTH) {
+            } else if ($this->checklist->teacheredit == ELEDIACHECKLIST_MARKING_BOTH) {
                 echo '<p class="checklistwarning">'.get_string('autoupdatewarning_both', 'checklist').'</p>';
             }
         }
@@ -2188,7 +2188,7 @@ class elediachecklist_class {
             echo '<input type="submit" class="btn btn-secondary" name="submit" value="'.get_string('savechecks', 'elediachecklist').
                 '" />';
         } else if (!$reportsettings->showprogressbars && $this->caneditother()
-            && $this->checklist->teacheredit != CHECKLIST_MARKING_STUDENT
+            && $this->checklist->teacheredit != ELEDIACHECKLIST_MARKING_STUDENT
         ) {
             echo '&nbsp;&nbsp;<form style="display: inline;" class="form-inline" action="'.$thisurl->out_omit_querystring().
                 '" method="get" />';
@@ -2268,7 +2268,7 @@ class elediachecklist_class {
                     $itemstocount = array();
                     foreach ($this->items as $item) {
                         if (!$item->hidden) {
-                            if (($item->itemoptional == CHECKLIST_OPTIONAL_YES) || ($item->itemoptional == CHECKLIST_OPTIONAL_NO)) {
+                            if (($item->itemoptional == ELEDIACHECKLIST_OPTIONAL_YES) || ($item->itemoptional == ELEDIACHECKLIST_OPTIONAL_NO)) {
                                 $itemstocount[] = $item->id;
                             }
                         }
@@ -2277,7 +2277,7 @@ class elediachecklist_class {
                     $itemstocount = array();
                     foreach ($this->items as $item) {
                         if (!$item->hidden) {
-                            if ($item->itemoptional == CHECKLIST_OPTIONAL_NO) {
+                            if ($item->itemoptional == ELEDIACHECKLIST_OPTIONAL_NO) {
                                 $itemstocount[] = $item->id;
                             }
                         }
@@ -2288,7 +2288,7 @@ class elediachecklist_class {
                 $sql = '';
                 if ($totalitems) {
                     list($isql, $iparams) = $DB->get_in_or_equal($itemstocount, SQL_PARAMS_NAMED);
-                    if ($this->checklist->teacheredit == CHECKLIST_MARKING_STUDENT) {
+                    if ($this->checklist->teacheredit == ELEDIACHECKLIST_MARKING_STUDENT) {
                         $sql = 'usertimestamp > 0 AND item '.$isql.' AND userid = :user ';
                     } else {
                         $sql = 'teachermark = '.CHECKLIST_TEACHERMARK_YES.' AND item '.$isql.' AND userid = :user ';
@@ -2365,7 +2365,7 @@ class elediachecklist_class {
                 $table->head[] = format_string($item->displaytext).$this->output->item_grouping($item);
                 $table->level[] = ($item->indent < 3) ? $item->indent : 2;
                 $table->size[] = '80px';
-                $table->skip[] = (!$reportsettings->showoptional) && ($item->itemoptional == CHECKLIST_OPTIONAL_YES);
+                $table->skip[] = (!$reportsettings->showoptional) && ($item->itemoptional == ELEDIACHECKLIST_OPTIONAL_YES);
             }
 
             $disableditems = $this->get_teacher_disabled_items();
@@ -2398,7 +2398,7 @@ class elediachecklist_class {
                             continue;
                         }
 
-                        if ($check->itemoptional == CHECKLIST_OPTIONAL_HEADING) {
+                        if ($check->itemoptional == ELEDIACHECKLIST_OPTIONAL_HEADING) {
                             $row[] = array(false, false, true, 0, 0);
                         } else {
                             if ($check->usertimestamp > 0) {
@@ -2489,8 +2489,8 @@ class elediachecklist_class {
         $output .= '<table summary="'.get_string('reporttablesummary', 'elediachecklist').'"';
         $output .= ' cellpadding="5" cellspacing="1" class="generaltable boxaligncenter checklistreport">';
 
-        $showteachermark = !($this->checklist->teacheredit == CHECKLIST_MARKING_STUDENT);
-        $showstudentmark = !($this->checklist->teacheredit == CHECKLIST_MARKING_TEACHER);
+        $showteachermark = !($this->checklist->teacheredit == ELEDIACHECKLIST_MARKING_STUDENT);
+        $showstudentmark = !($this->checklist->teacheredit == ELEDIACHECKLIST_MARKING_TEACHER);
         $teachermarklocked = $this->checklist->lockteachermarks && !has_capability('mod/elediachecklist:updatelocked', $this->context);
 
         // Sort out the heading row.
@@ -2525,10 +2525,10 @@ class elediachecklist_class {
         // Output the data.
         $tickimg = $OUTPUT->pix_icon('i/grade_correct', get_string('itemcomplete', 'elediachecklist'));
         $teacherimg = array(
-            CHECKLIST_TEACHERMARK_UNDECIDED => $OUTPUT->pix_icon('empty_box',
+            ELEDIACHECKLIST_TEACHERMARK_UNDECIDED => $OUTPUT->pix_icon('empty_box',
                                                                  get_string('teachermarkundecided', 'elediachecklist'), 'checklist'),
-            CHECKLIST_TEACHERMARK_YES => $OUTPUT->pix_icon('tick_box', get_string('teachermarkyes', 'elediachecklist'), 'checklist'),
-            CHECKLIST_TEACHERMARK_NO => $OUTPUT->pix_icon('cross_box', get_string('teachermarkno', 'elediachecklist'), 'checklist'),
+            ELEDIACHECKLIST_TEACHERMARK_YES => $OUTPUT->pix_icon('tick_box', get_string('teachermarkyes', 'elediachecklist'), 'checklist'),
+            ELEDIACHECKLIST_TEACHERMARK_NO => $OUTPUT->pix_icon('cross_box', get_string('teachermarkno', 'elediachecklist'), 'checklist'),
         );
         $oddeven = 1;
         $keys = array_keys($table->data);
@@ -2571,24 +2571,24 @@ class elediachecklist_class {
                             ';" class="cell c'.$colkey.' reportheading">&nbsp;</td>';
                     } else {
                         if ($showteachermark) {
-                            if ($teachermark == CHECKLIST_TEACHERMARK_YES) {
+                            if ($teachermark == ELEDIACHECKLIST_TEACHERMARK_YES) {
                                 $cellclass .= '-checked';
                                 $img = $teacherimg[$teachermark];
-                            } else if ($teachermark == CHECKLIST_TEACHERMARK_NO) {
+                            } else if ($teachermark == ELEDIACHECKLIST_TEACHERMARK_NO) {
                                 $cellclass .= '-unchecked';
                                 $img = $teacherimg[$teachermark];
                             } else {
-                                $img = $teacherimg[CHECKLIST_TEACHERMARK_UNDECIDED];
+                                $img = $teacherimg[ELEDIACHECKLIST_TEACHERMARK_UNDECIDED];
                             }
 
                             if ($editchecks) {
-                                $lock = $teachermarklocked && $teachermark == CHECKLIST_TEACHERMARK_YES;
+                                $lock = $teachermarklocked && $teachermark == ELEDIACHECKLIST_TEACHERMARK_YES;
                                 $lock = $lock || in_array($checkid, $disableditems);
                                 $disabled = $lock ? 'disabled="disabled" ' : '';
 
-                                $selu = ($teachermark == CHECKLIST_TEACHERMARK_UNDECIDED) ? 'selected="selected" ' : '';
-                                $sely = ($teachermark == CHECKLIST_TEACHERMARK_YES) ? 'selected="selected" ' : '';
-                                $seln = ($teachermark == CHECKLIST_TEACHERMARK_NO) ? 'selected="selected" ' : '';
+                                $selu = ($teachermark == ELEDIACHECKLIST_TEACHERMARK_UNDECIDED) ? 'selected="selected" ' : '';
+                                $sely = ($teachermark == ELEDIACHECKLIST_TEACHERMARK_YES) ? 'selected="selected" ' : '';
+                                $seln = ($teachermark == ELEDIACHECKLIST_TEACHERMARK_NO) ? 'selected="selected" ' : '';
 
                                 $img = '<select name="items_'.$userid.'['.$checkid.']" '.$disabled.'>';
                                 $img .= '<option value="'.CHECKLIST_TEACHERMARK_UNDECIDED.'" '.$selu.'></option>';
@@ -2762,7 +2762,7 @@ class elediachecklist_class {
                 } else {
                     $duetime = optional_param_array('duetime', false, PARAM_INT);
                 }
-                $this->additem($displaytext, 0, $indent, $position, $duetime, 0, CHECKLIST_OPTIONAL_NO, CHECKLIST_HIDDEN_NO,
+                $this->additem($displaytext, 0, $indent, $position, $duetime, 0, ELEDIACHECKLIST_OPTIONAL_NO, ELEDIACHECKLIST_HIDDEN_NO,
                                $linkcourseid, $linkurl, $groupingid, $openlinkinnewwindow);
                 if ($position) {
                     $additemafter = false;
@@ -2987,7 +2987,7 @@ class elediachecklist_class {
      * @return false|int
      */
     public function additem($displaytext, $userid = 0, $indent = 0, $position = false, $duetime = false, $moduleid = 0,
-                            $optional = CHECKLIST_OPTIONAL_NO, $hidden = CHECKLIST_HIDDEN_NO, $linkcourseid = null,
+                            $optional = ELEDIACHECKLIST_OPTIONAL_NO, $hidden = ELEDIACHECKLIST_HIDDEN_NO, $linkcourseid = null,
                             $linkurl = null, $groupingid = 0, $openlinkinnewwindow = false) {
         $displaytext = trim($displaytext);
         if ($displaytext == '') {
@@ -3193,7 +3193,7 @@ class elediachecklist_class {
                 }
 
                 if ($item->linkcourseid != $oldlinkcourseid) {
-                    if ($this->checklist->autoupdate == CHECKLIST_AUTOUPDATE_YES) {
+                    if ($this->checklist->autoupdate == ELEDIACHECKLIST_AUTOUPDATE_YES) {
                         // If autoupdate is yes, cannot override, reset all checks for this item, before recalculating status
                         // (if the student *can* override, or if there is no autoupdate, then leave them as they are).
                         $item->clear_all_student_checks();
@@ -3374,8 +3374,8 @@ class elediachecklist_class {
 
         if ($indent < 0) {
             $indent = 0;
-        } else if ($indent > CHECKLIST_MAX_INDENT) {
-            $indent = CHECKLIST_MAX_INDENT;
+        } else if ($indent > ELEDIACHECKLIST_MAX_INDENT) {
+            $indent = ELEDIACHECKLIST_MAX_INDENT;
         }
 
         $oldindent = $item->indent;
@@ -3436,20 +3436,20 @@ class elediachecklist_class {
         $item = $this->items[$itemid];
 
         if ($heading) {
-            $optional = CHECKLIST_OPTIONAL_HEADING;
+            $optional = ELEDIACHECKLIST_OPTIONAL_HEADING;
         } else if ($optional) {
-            $optional = CHECKLIST_OPTIONAL_YES;
+            $optional = ELEDIACHECKLIST_OPTIONAL_YES;
         } else {
-            $optional = CHECKLIST_OPTIONAL_NO;
+            $optional = ELEDIACHECKLIST_OPTIONAL_NO;
         }
 
         if ($item->moduleid) {
             if ($item->is_heading()) {
                 return; // Topic headings must stay as headings.
-            } else if ($item->itemoptional == CHECKLIST_OPTIONAL_YES) {
-                $optional = CHECKLIST_OPTIONAL_NO; // Module links cannot become headings.
+            } else if ($item->itemoptional == ELEDIACHECKLIST_OPTIONAL_YES) {
+                $optional = ELEDIACHECKLIST_OPTIONAL_NO; // Module links cannot become headings.
             } else {
-                $optional = CHECKLIST_OPTIONAL_YES;
+                $optional = ELEDIACHECKLIST_OPTIONAL_YES;
             }
         }
 
@@ -3549,7 +3549,7 @@ class elediachecklist_class {
         $updategrades = false;
         if ($this->items) {
             foreach ($this->items as $item) {
-                if ($this->checklist->autoupdate == CHECKLIST_AUTOUPDATE_YES) {
+                if ($this->checklist->autoupdate == ELEDIACHECKLIST_AUTOUPDATE_YES) {
                     if ($item->moduleid) {
                         continue; // Item linked to course module and autoupdate enabled and cannot override.
                     }
@@ -3587,8 +3587,8 @@ class elediachecklist_class {
     protected function get_teacher_disabled_items() {
         global $DB;
         $disableitems = [];
-        if ($this->checklist->autoupdate == CHECKLIST_AUTOUPDATE_YES &&
-            $this->checklist->teacheredit == CHECKLIST_MARKING_TEACHER
+        if ($this->checklist->autoupdate == ELEDIACHECKLIST_AUTOUPDATE_YES &&
+            $this->checklist->teacheredit == ELEDIACHECKLIST_MARKING_TEACHER
         ) {
             // Checklist is auto updating + only showing teacher marks => disable teacher marks for items that auto update.
             $tab = elediachecklist_tab('eledia_adminexamdates_itm'); // elediachecklist__item
@@ -3623,7 +3623,7 @@ class elediachecklist_class {
             return;
         }
 
-        if ($this->checklist->teacheredit != CHECKLIST_MARKING_STUDENT) {
+        if ($this->checklist->teacheredit != ELEDIACHECKLIST_MARKING_STUDENT) {
             if (!$DB->record_exists('user', ['id' => $this->userid])) {
                 error('No such user!');
             }
@@ -3726,7 +3726,7 @@ class elediachecklist_class {
     protected function updateallteachermarks() {
         global $USER;
 
-        if ($this->checklist->teacheredit == CHECKLIST_MARKING_STUDENT) {
+        if ($this->checklist->teacheredit == ELEDIACHECKLIST_MARKING_STUDENT) {
             // Student only lists do not have teacher marks to update.
             return;
         }
@@ -3776,7 +3776,7 @@ class elediachecklist_class {
             $updategrades = false;
             foreach ($items as $itemid => $val) {
                 if (!array_key_exists($itemid, $currentchecks)) {
-                    if ($val == CHECKLIST_TEACHERMARK_UNDECIDED) {
+                    if ($val == ELEDIACHECKLIST_TEACHERMARK_UNDECIDED) {
                         continue; // Do not create an entry for blank marks.
                     }
 
@@ -3790,7 +3790,7 @@ class elediachecklist_class {
                 } else {
                     $current = $currentchecks[$itemid];
                     if ($current->teachermark != $val) {
-                        if ($teachermarklocked && $current->teachermark == CHECKLIST_TEACHERMARK_YES) {
+                        if ($teachermarklocked && $current->teachermark == ELEDIACHECKLIST_TEACHERMARK_YES) {
                             continue;
                         }
 
@@ -3844,7 +3844,7 @@ class elediachecklist_class {
         }
         $userids = array_keys($users);
 
-        $teachermark = ($this->checklist->teacheredit == CHECKLIST_MARKING_TEACHER);
+        $teachermark = ($this->checklist->teacheredit == ELEDIACHECKLIST_MARKING_TEACHER);
 
         // Update all checklist items that are linked to course modules.
         if ($updmodules) {
@@ -3914,7 +3914,7 @@ class elediachecklist_class {
                       FROM {".$tab."} i
                       JOIN {course} c ON c.id = i.linkcourseid
                      WHERE i.checklist = :checklistid AND i.itemoptional <> :heading AND c.enablecompletion = 1";
-            $params = ['checklistid' => $this->checklist->id, 'heading' => CHECKLIST_OPTIONAL_HEADING];
+            $params = ['checklistid' => $this->checklist->id, 'heading' => ELEDIACHECKLIST_OPTIONAL_HEADING];
             $items = $DB->get_records_sql($sql, $params);
 
             foreach ($items as $item) {
@@ -3955,7 +3955,7 @@ class elediachecklist_class {
             }
             $userids = array_keys($users);
         }
-        $teachermark = ($this->checklist->teacheredit == CHECKLIST_MARKING_TEACHER);
+        $teachermark = ($this->checklist->teacheredit == ELEDIACHECKLIST_MARKING_TEACHER);
 
         // Generate a list of users who have completed the given course.
         list($usql, $params) = $DB->get_in_or_equal($userids, SQL_PARAMS_NAMED);
@@ -4102,7 +4102,7 @@ class elediachecklist_class {
         $params = array_merge(array($userid), $iparams);
 
         $sql = "userid = ? AND item $isql AND ";
-        if ($checklist->teacheredit == CHECKLIST_MARKING_STUDENT) {
+        if ($checklist->teacheredit == ELEDIACHECKLIST_MARKING_STUDENT) {
             $sql .= 'usertimestamp > 0';
         } else {
             $sql .= 'teachermark = '.CHECKLIST_TEACHERMARK_YES;

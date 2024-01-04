@@ -56,7 +56,7 @@ class checklist_check extends data_object {
     /** @var int */
     public $usertimestamp = 0;
     /** @var int */
-    public $teachermark = CHECKLIST_TEACHERMARK_UNDECIDED;
+    public $teachermark = ELEDIACHECKLIST_TEACHERMARK_UNDECIDED;
     /** @var int */
     public $teachertimestamp = 0;
     /** @var int|null */
@@ -130,7 +130,7 @@ class checklist_check extends data_object {
      * @return bool
      */
     public static function teachermark_valid($teachermark) {
-        return in_array($teachermark, [CHECKLIST_TEACHERMARK_YES, CHECKLIST_TEACHERMARK_NO, CHECKLIST_TEACHERMARK_UNDECIDED]);
+        return in_array($teachermark, [ELEDIACHECKLIST_TEACHERMARK_YES, ELEDIACHECKLIST_TEACHERMARK_NO, ELEDIACHECKLIST_TEACHERMARK_UNDECIDED]);
     }
 
     /**
@@ -139,7 +139,7 @@ class checklist_check extends data_object {
     protected function check_fields_valid() {
         if (!self::teachermark_valid($this->teachermark)) {
             debugging('Unexpected teachermark value: '.$this->teachermark);
-            $this->teachermark = CHECKLIST_TEACHERMARK_UNDECIDED;
+            $this->teachermark = ELEDIACHECKLIST_TEACHERMARK_UNDECIDED;
         }
     }
 
@@ -185,7 +185,7 @@ class checklist_check extends data_object {
      * @return bool
      */
     public function is_checked_teacher() {
-        return ($this->teachermark == CHECKLIST_TEACHERMARK_YES);
+        return ($this->teachermark == ELEDIACHECKLIST_TEACHERMARK_YES);
     }
 
     /**
