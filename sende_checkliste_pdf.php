@@ -423,8 +423,8 @@ foreach ($checks as $item) {
 
 // IMMER:
 // An $contactpersonmail -> Der Ansprechpartner (s. module.js)
-$subject = get_string("checkliste_mail_subject", "elediachecklist");
-$message = get_string("checkliste_mail_text", "elediachecklist" );
+$subject = get_string('checkliste_mail_subject', "elediachecklist");
+$message = get_string('checkliste_mail_text', "elediachecklist" );
 $message = str_replace("{Datum}",       $examDate,    $message);
 $message = str_replace("{BEZEICHNUNG}", $bezeichnung, $message);
 email_to_user(core_user::get_user_by_email($contactpersonmail), $CFG->noreplyaddress, $subject, $message, $message, $CFG->dataroot . "/" . $pdfName, $pdfName );
@@ -452,7 +452,7 @@ if ($extraEmail != null  &&  $extraEmail != ""  &&  filter_var($extraEmail, FILT
         $userextra->mailformat = 1;
     }
 
-    $message = get_string("checkliste_mail_text", "elediachecklist" );
+    $message = get_string('checkliste_mail_text', "elediachecklist" );
     $message = str_replace("{Datum}",       $examDate,    $message);
     $message = str_replace("{BEZEICHNUNG}", $bezeichnung, $message);
     //email_to_user(core_user::get_user_by_email($extraEmail), $CFG->noreplyaddress, $subject, $message, $message, $CFG->dataroot . "/" . $pdfName, $pdfName);

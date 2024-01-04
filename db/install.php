@@ -96,7 +96,7 @@ function xmldb_elediachecklist_install() {
 
     // Tab: Termincheckliste //.
     /*
-    $DB->execute("INSERT INTO {elediachecklist_item} VALUES (1, 1, 0, 'Ersteller: innenzugriff vorhanden', 1, 0, 2, -60, 0, 'black', 0, 0, 0, NULL, '', 0, 'Ersteller: innenzugriff vorhanden {Datum}')", null);
+    $DB->execute("INSERT INTO {elediachecklist_item} VALUES (1, 1, 0, 'Ersteller*innenzugriff vorhanden', 1, 0, 2, -60, 0, 'black', 0, 0, 0, NULL, '', 0, 'Ersteller*innenzugriff vorhanden {Datum}')", null);
     $DB->execute("INSERT INTO {elediachecklist_item} VALUES (2, 1, 0, 'Bereitstellung der Termincheckliste', 2, 0, 0, -34, 0, 'black', 0, 0, 0, NULL, '', 0, 'Bereitstellung der Termincheckliste {Datum}')", null);
     $DB->execute("INSERT INTO {elediachecklist_item} VALUES (3, 1, 0, 'Prüfungskonfiguration beschrieben', 3, 0, 0, -13, 0, 'black', 0, 0, 0, NULL, '', 0, 'Prüfungskonfiguration beschrieben {Datum}')", null);
     $DB->execute("INSERT INTO {elediachecklist_item} VALUES (4, 1, 0, 'Prüfungsimage vorbereitet', 4, 0, 0, -11, 0, 'black', 0, 0, 0, NULL, '', 0, 'Prüfungsimage vorbereitet {Datum}')", null);

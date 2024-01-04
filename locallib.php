@@ -1575,8 +1575,6 @@ class elediachecklist_class {
         //echo 'data_instance_id_problems = '.$val.'<br />';
         //$val = get_config('elediachecklist', 'data_field_id_default');
         //echo 'data_field_id_default = '.$val.'<br />';
-        //$val = get_string('databaselink', 'elediachecklist');
-        //echo 'databaselink = '.$val.'<br />';
 
         unset($href);
         $params = array();

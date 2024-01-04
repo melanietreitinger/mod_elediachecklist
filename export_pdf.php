@@ -20,9 +20,9 @@ class export_pdf extends FPDF {
         // Title
         $type = optional_param('type', '', PARAM_TEXT);
         if ($type == "qm") {
-            $this->Cell(80, 10, iconv('UTF-8', 'windows-1252', 'Qualitätsmanagement'), 1, 0, 'C');
+            $this->Cell(80, 10, iconv('UTF-8', 'windows-1252', get_string('Qualitätsmanagement', 'elediachecklist'), 1, 0, 'C');
         } else {
-            $this->Cell(80, 10, iconv('UTF-8', 'windows-1252', 'Endabnahmeprotokoll E-Klausur'), 1, 0, 'C');
+            $this->Cell(80, 10, iconv('UTF-8', 'windows-1252', get_string('Endabnahmeprotokoll E-Klausur', 'elediachecklist'), 1, 0, 'C');
         }
 
         // ALT
@@ -67,19 +67,19 @@ class export_pdf extends FPDF {
                 $this->Cell(0, 10, '__________________________________                                           ____________________________________', 0, 0, 'C');
                 $this->SetY(-35);
                 $this->SetX(75);
-                $this->Cell(0, 10, iconv('UTF-8', 'windows-1252', get_string("unterschrift_eklausurteam", "elediachecklist")), 0, 0, 'L');
+                $this->Cell(0, 10, iconv('UTF-8', 'windows-1252', get_string('unterschrift_eklausurteam', 'elediachecklist')), 0, 0, 'L');
                 $this->SetX(163);
-                $this->Cell(0, 10, iconv('UTF-8', 'windows-1252', get_string("unterschrift_verantwortlicher", "elediachecklist")), 0, 0, 'L');
+                $this->Cell(0, 10, iconv('UTF-8', 'windows-1252', get_string('unterschrift_verantwortlicher', 'elediachecklist')), 0, 0, 'L');
 
 
                 $this->SetFont('Arial', 'B', 10);
                 $this->SetY(120);
-                //$this->Cell(0, 10, iconv('UTF-8', 'windows-1252', 'Bemerkungen:'), 0, 0, 'L');
-                //$this->Cell(0, 10, iconv('UTF-8', 'windows-1252', get_string("Es_wird_vom_Fachgebiet", "elediachecklist")), 0, 0, 'L');
+                //$this->Cell(0, 10, iconv('UTF-8', 'windows-1252', get_string('Bemerkungen', 'elediachecklist'), 0, 0, 'L');
+                //$this->Cell(0, 10, iconv('UTF-8', 'windows-1252', get_string('Es_wird_vom_Fachgebiet', 'elediachecklist')), 0, 0, 'L');
 
                 $this->SetFont('Arial', '', 9);
                 //$this->SetY(125);
-                //$this->Cell(0, 10, iconv('UTF-8', 'windows-1252', get_string("Es_wird_vom_Fachgebiet", "elediachecklist")), 0, 0, 'L');
+                //$this->Cell(0, 10, iconv('UTF-8', 'windows-1252', get_string('Es_wird_vom_Fachgebiet', 'elediachecklist')), 0, 0, 'L');
 
                 // Bemerkungen, String //.
                 $this->SetFont('Arial', 'B', 10);
@@ -111,7 +111,7 @@ class export_pdf extends FPDF {
                 //$this->SetY(160);
                 // NEU
                 $this->SetY(171);
-                $this->Cell(0, 10, iconv('UTF-8', 'windows-1252', get_string("Place_pdf", "elediachecklist") . ", " . date('d.m.Y', time())), 0, 0, 'L');
+                $this->Cell(0, 10, iconv('UTF-8', 'windows-1252', get_string('Place_pdf', 'elediachecklist') . ', ' . date('d.m.Y', time())), 0, 0, 'L');
             }
             // Position at 1.5 cm from bottom
             $this->SetY(-15);
@@ -310,13 +310,13 @@ if (isset($_REQUEST['commentsEA']) ) {
     $pdf->SetFont('Arial', '', 9);
 
     // Klausur //.
-    $txt = iconv('UTF-8', 'windows-1252', 'Klausur:') . ':  ' .iconv('UTF-8', 'windows-1252', $examName[0]);
+    $txt = iconv('UTF-8', 'windows-1252', get_string('Klausur:', 'elediachecklist') . ':  ' .iconv('UTF-8', 'windows-1252', $examName[0]);
     $pdf->Cell(0, 10, $txt, 0, 0, 'L');
     $pdf->Ln(5);
 
     // Klausurdatum //.
     $pdf->SetX(10);
-    $inp = iconv('UTF-8', 'windows-1252', 'Klausurdatum:') . ': ';
+    $inp = iconv('UTF-8', get_string('windows-1252', 'Klausurdatum:', 'elediachecklist') . ': ';
     if (isset($myrow[2]) && $myrow[2] != 0) {
         //$inp .= date('d.m.Y', strtotime($klausurrow[0] . ' day', strtotime($examdate)));
         $inp .= date('d.m.Y', $myrow[2]);
@@ -327,7 +327,7 @@ if (isset($_REQUEST['commentsEA']) ) {
     // Dozent //.
     $inp = implode(', ', $arrdozent);
     $pdf->SetX(10);
-    $pdf->Cell(0, 10, iconv('UTF-8', 'windows-1252', 'Dozent') . ': ' . iconv('UTF-8', 'windows-1252', $inp), 0, 0, 'L');
+    $pdf->Cell(0, 10, iconv('UTF-8', 'windows-1252', get_string('Dozent', 'elediachecklist') . ': ' . iconv('UTF-8', 'windows-1252', $inp), 0, 0, 'L');
 
     // Line break
     //$pdf->Ln(20);

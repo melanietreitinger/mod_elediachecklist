@@ -35,13 +35,13 @@ class PDF extends FPDF
             $this->SetY(-30);
             $this->Cell(0, 10, '______________________________________________________________________', 0, 0, 'C');
             $this->SetY(-25);
-            $this->Cell(0, 10, iconv('UTF-8', 'windows-1252', get_string("unterschrift_eklausurteam", "elediachecklist")), 0, 0, 'C');
+            $this->Cell(0, 10, iconv('UTF-8', 'windows-1252', get_string('unterschrift_eklausurteam', "elediachecklist")), 0, 0, 'C');
 
             $this->SetY(-20);
-            $this->Cell(0, 10, iconv('UTF-8', 'windows-1252', get_string("Place_pdf", "elediachecklist") . " " . date('d.m.Y', time())) , 0, 0, 'C');
+            $this->Cell(0, 10, iconv('UTF-8', 'windows-1252', get_string('Place_pdf', "elediachecklist") . " " . date('d.m.Y', time())) , 0, 0, 'C');
 
             $this->SetY(-15);
-            $this->Cell(0, 10, iconv('UTF-8', 'windows-1252',get_string("Es_wird_vom_Fachgebiet", "elediachecklist")), 0, 0, 'C');
+            $this->Cell(0, 10, iconv('UTF-8', 'windows-1252',get_string('Es_wird_vom_Fachgebiet', "elediachecklist")), 0, 0, 'C');
 
         }
         // Position at 1.5 cm from bottom

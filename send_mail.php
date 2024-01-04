@@ -189,8 +189,8 @@ foreach ($checks as $item) {
 
 // Klausurvorbereitung
 if ($mailType == "kvb") {
-    $subject = get_string("KVB_mail_subject", "elediachecklist");
-    $message = get_string("KVB_mail_text", "elediachecklist" );
+    $subject = get_string('KVB_mail_subject', "elediachecklist");
+    $message = get_string('KVB_mail_text', "elediachecklist" );
     $message = str_replace("{ITEMS}", $checksInMail, $message);
     $message = str_replace("{Datum}", $examDate, $message);
     $message = str_replace("{BEZEICHNUNG}", $bezeichnung, $message);
@@ -198,8 +198,8 @@ if ($mailType == "kvb") {
 }
 // Klausurnachbereitung
 else if ($mailType == "knb") {
-    $subject = get_string("KNB_mail_subject", "elediachecklist"  );
-    $message = get_string("KNB_mail_text", "elediachecklist"  );;
+    $subject = get_string('KNB_mail_subject', "elediachecklist"  );
+    $message = get_string('KNB_mail_text', "elediachecklist"  );;
     $message = str_replace("{ITEMS}", $checksInMail, $message);
     $message = str_replace("{Datum}", $examDate, $message);
     $message = str_replace("{BEZEICHNUNG}", $bezeichnung, $message);

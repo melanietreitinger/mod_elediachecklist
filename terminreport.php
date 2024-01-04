@@ -160,11 +160,7 @@ class MyTable {
 
             $text .= \html_writer::tag('td', $date->examname) . "\n";
             $text .= \html_writer::tag('td', $sclname) . "\n";
-            //$text .= \html_writer::tag('td', $date->checked);
-            //$text .= \html_writer::tag('td', "<a href='tabtermin.php?id=" . get_string('checklist_id', 'elediachecklist') . "&examid=" . $date->examid . "'>" . $date->topic . "</a>");
-            //$text .= \html_writer::tag('td', "<a href='".$href."'>" . $date->topic . "</a>");
             $text .= \html_writer::tag('td', '<a href="' . $href . '">' . $date->topic . '</a>') . "\n";
-            //$text .= \html_writer::tag('td', $date->topicdate);
             $text .= \html_writer::tag('td', $topicdate) . "\n";
 
             // hidden -> scl_id

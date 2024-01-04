@@ -39,7 +39,7 @@ class myPDF extends TCPDF {
 PDF (ist, 17 Punkte)                                {elediachecklist__item}.id
                                                     {eledia__adminexamdates_itm}
 --------------------                                -------------------------
-A Ersteller: innenzugriff vorhanden                  1
+A Ersteller*innenzugriff vorhanden                  1
 B Bereitstellung der Termincheckliste                2
 C Prüfungskonfiguration beschrieben                  3
 D Prüfungsimage vorbereitet                          4
