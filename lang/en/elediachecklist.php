@@ -34,9 +34,9 @@ $string['tablehead_topicdate'] = 'Date';
 $string['tablehead_id'] = 'ID';
 $string['tablehead_examid'] = 'Exam ID';
 
-$string['Dozent'] = 'Teacher';
-$string['Klausur'] = 'Exam';
-$string['Datum'] = 'Date';
+$string['dozent'] = 'Teacher';
+$string['klausur'] = 'Exam';
+$string['datum'] = 'Date';
 
 $string['report_button'] = 'Report';
 
@@ -317,7 +317,6 @@ $string['yesnooverride'] = 'Yes, cannot override';
 $string['yesoverride'] = 'Yes, can override';
 
 $string['ueberschrift_01'] = 'Your e-exam checklist';
-$string['dozent'] = 'Teacher';
 $string['bezeichnung_klausur'] = 'Exam name';
 $string['klausurtermin'] = 'Exam date';
 $string['name_scl_betreuer'] = 'Service center supervisor';

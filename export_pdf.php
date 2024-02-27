@@ -310,7 +310,7 @@ if (isset($_REQUEST['commentsEA']) ) {
     $pdf->SetFont('Arial', '', 9);
 
     // Klausur //.
-    $txt = iconv('UTF-8', 'windows-1252', get_string('Klausur:', 'elediachecklist') . ':  ' .iconv('UTF-8', 'windows-1252', $examName[0]);
+    $txt = iconv('UTF-8', 'windows-1252', get_string('klausur:', 'elediachecklist') . ':  ' .iconv('UTF-8', 'windows-1252', $examName[0]);
     $pdf->Cell(0, 10, $txt, 0, 0, 'L');
     $pdf->Ln(5);
 
@@ -327,7 +327,7 @@ if (isset($_REQUEST['commentsEA']) ) {
     // Dozent //.
     $inp = implode(', ', $arrdozent);
     $pdf->SetX(10);
-    $pdf->Cell(0, 10, iconv('UTF-8', 'windows-1252', get_string('Dozent', 'elediachecklist') . ': ' . iconv('UTF-8', 'windows-1252', $inp), 0, 0, 'L');
+    $pdf->Cell(0, 10, iconv('UTF-8', 'windows-1252', get_string('dozent', 'elediachecklist') . ': ' . iconv('UTF-8', 'windows-1252', $inp), 0, 0, 'L');
 
     // Line break
     //$pdf->Ln(20);

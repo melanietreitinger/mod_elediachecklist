@@ -34,9 +34,9 @@ $string['tablehead_topicdate'] = 'Datum';
 $string['tablehead_id'] = 'ID';
 $string['tablehead_examid'] = 'Exam ID';
 
-$string['Dozent'] = 'Dozent';
-$string['Klausur'] = 'Klausur';
-$string['Datum'] = 'Datum';
+$string['dozent'] = 'Dozent*in';
+$string['klausur'] = 'Klausur';
+$string['datum'] = 'Datum';
 
 $string['report_button'] = 'Report';
 
@@ -317,7 +317,6 @@ $string['yesnooverride'] = 'Yes, cannot override';
 $string['yesoverride'] = 'Yes, can override';
 
 $string['ueberschrift_01'] = 'Ihre E-Klausur Termincheckliste';
-$string['dozent'] = 'Dozent*in';
 $string['bezeichnung_klausur'] = 'Bezeichnung Klausur';
 $string['klausurtermin'] = 'Klausurtermin';
 $string['name_scl_betreuer'] = 'Name E-Assessment Center Betreuer*in';
